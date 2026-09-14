@@ -1,0 +1,7 @@
+3684d712c4d7857a1a2a4267093e5a8c5b8e6f064fe508beef8af1fdce7e0392  downloads/v1.2.0/AwakeMini-v1.2.0-source.zip
+af4493993639ac26f58fcaf722251f8c0d11ee69378175b2027697bf06956a2f  downloads/v1.2.0/AwakeMini-v1.2.0-x64-auto.exe
+604ffae0bca0e325271e6c05ac46afdbb79ccedd541e4a5b2b185a0a7f3236dc  downloads/v1.2.0/AwakeMini-v1.2.0-x64-en.exe
+72c61844186dd715a8e7b5dccf2a05a8d03838fd44d89aa448b16c790e395780  downloads/v1.2.0/AwakeMini-v1.2.0-x64-ko.exe
+3ef25d6ffbf90abee00fa790d3cef5d0a51504913a3bfca17891509ede6759a0  downloads/v1.2.0/AwakeMini-v1.2.0-x86-auto.exe
+30b9f4762b9c409b781199ff5be51ca8e2d772916756207f616e51ba867ac0a7  downloads/v1.2.0/AwakeMini-v1.2.0-x86-en.exe
+4adabd20ec7336831f6d72535f597568ff7c541803dffab1d58611eadff9c626  downloads/v1.2.0/AwakeMini-v1.2.0-x86-ko.exe
