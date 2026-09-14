@@ -1,4 +1,4 @@
-# Awake Mini 1.2.0
+# Awake Mini 1.3.0
 
 A small Windows tray utility providing keep-awake requests, display keep-on, idle mouse input, experimental update pause renewal, and launch at sign-in. No installer or additional runtime is required.
 
@@ -8,17 +8,17 @@ A small Windows tray utility providing keep-awake requests, display keep-on, idl
 
 | File | Language | Target |
 |---|---|---|
-| [AwakeMini-v1.2.0-x64-auto.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
-| [AwakeMini-v1.2.0-x64-ko.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
-| [AwakeMini-v1.2.0-x64-en.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x64-en.exe?raw=true) | English | 64-bit Windows |
-| [AwakeMini-v1.2.0-x86-auto.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.2.0-x86-ko.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.2.0-x86-en.exe](downloads/v1.2.0/AwakeMini-v1.2.0-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.0-x64-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
+| [AwakeMini-v1.3.0-x64-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
+| [AwakeMini-v1.3.0-x64-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-en.exe?raw=true) | English | 64-bit Windows |
+| [AwakeMini-v1.3.0-x86-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.0-x86-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.0-x86-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
 
 The automatic build uses Korean when the current user's Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart the app after changing the display language. Fixed-language builds are separate executables and need no command-line options. Run only one executable at a time.
 
 
-**Complete download:** [Six executables, source, and both READMEs](downloads/v1.2.0/AwakeMini-v1.2.0-source.zip?raw=true)
+**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.0/AwakeMini-v1.3.0-source.zip?raw=true)
 
 ## Quick start
 
@@ -35,6 +35,18 @@ The automatic build uses Korean when the current user's Windows **display langua
 - Mouse and power requests pause on locked or secure desktops.
 - Screen saver prevention may not work where synthetic input is restricted.
 - Pause all applies to the current session. Other settings are saved.
+
+## Black screen — Win + Backspace
+
+Press **Win + Backspace** to cover the entire virtual desktop (all monitors) in black and hide the pointer. Press **the same shortcut again** to return. Mouse movements, clicks, and Escape do not dismiss it. The tray menu also lists the shortcut. Alt+F4 can close the cover as an emergency exit.
+
+- The display stays powered on. This does not request display power-off, a screen saver, lock, sign-out, or sleep. LCD backlights remain on.
+- While black, keep-system-awake, keep-display-on, and idle mouse input are temporarily enabled, even if those settings were OFF or Pause all was selected. Exiting restores the saved selection without changing it.
+- Mouse input uses the **existing idle delay** (default 2 minutes). It still skips held keys/buttons, recent activity, locked/secure desktops, and synthetic-input restrictions. Simulated movement never dismisses the cover.
+- Update renewal continues to follow its own ON/OFF and Pause all settings.
+- Monitor layout changes resize the cover. Lock, session disconnect, secure desktop, suspend, or app exit removes it; it does not automatically reappear after sign-in/resume.
+- The app must successfully register Win+Backspace before it permits blackout. If registration fails, the tray menu displays an unavailable status; it does not override another program's shortcut.
+- This is a visual cover, not a secure lock screen. System screens and other topmost applications may appear over it. Organization-enforced locking and screen saver policies still apply.
 
 ## Run at sign-in
 
@@ -69,7 +81,7 @@ The app does not change update policies, services, scheduled tasks, or ACLs. Sta
 - Settings dialog: 206×133 DLU. Pixel dimensions depend on DPI and font metrics.
 - Uses Windows system DLLs; no separate .NET or Python installation is needed to run the app.
 - Validation covers strict compilation of all six EXEs, language strings and placeholders, mocked startup registration, and update policy and date boundary checks. See `VERIFICATION.json` for the actual recorded checks.
-- Native Windows UI, automatic launch after sign-in, and organization-specific update behavior have not been tested in this environment.
+- Native Windows blackout rendering, hotkey behavior, mixed-DPI displays, automatic launch after sign-in, and organization-specific update behavior have not been tested in this environment.
 
 ## Source and build
 
@@ -79,6 +91,7 @@ Put MinGW-w64 i686/x86_64 gcc and windres on PATH.
 sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
+python3 src/test-blackout.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
