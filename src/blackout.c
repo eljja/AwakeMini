@@ -3,88 +3,72 @@
 #define _WIN32_WINNT 0x0A00
 #include <windows.h>
 #include "blackout.h"
-#include "blackout-keys.h"
+#include "language.h"
 
-static HWND cover, owner_window, previous_focus;
-static BOOL active, registered, panel_topmost;
-static HWND panel;
-static AM_BLACKOUT_KEYS keys;
+#define ID_RELEASE 1201
+static HWND cover, release_button, owner_window, previous_focus, previous_settings;
+static BOOL active;
 
 BOOL am_blackout_active(void) { return active; }
-BOOL am_blackout_shortcut_ready(void) { return registered; }
-BOOL am_blackout_testing(void) { return active && panel != NULL; }
-
-void am_blackout_input_reset(void)
-{
-    unsigned i;
-    ZeroMemory(&keys, sizeof(keys));
-    for (i = 0; i < 256; ++i) keys.down[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
-}
-
-void am_blackout_raw_input(LPARAM input)
-{
-    RAWINPUT raw;
-    UINT bytes = sizeof(raw);
-    if (GetRawInputData((HRAWINPUT)input, RID_INPUT, &raw, &bytes, sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-        bytes < sizeof(RAWINPUTHEADER) + sizeof(RAWKEYBOARD) || raw.header.dwType != RIM_TYPEKEYBOARD) return;
-    if (raw.data.keyboard.VKey == 255) return;
-    if (am_blackout_key(&keys, raw.data.keyboard.VKey, (raw.data.keyboard.Flags & RI_KEY_BREAK) != 0))
-        PostMessageW(owner_window, AM_BLACKOUT_TOGGLE, 0, 0);
-}
-
 
 void am_blackout_hide(BOOL restore_focus)
 {
+    HWND target;
     if (!active) return;
     active = FALSE;
     ShowWindow(cover, SW_HIDE);
-    if (IsWindow(panel) && !panel_topmost)
-        SetWindowPos(panel, HWND_NOTOPMOST, 0, 0, 0, 0,
-            SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-    panel = NULL;
-    /* Restore the normal cursor without changing the global ShowCursor count. */
     SetCursor(LoadCursorW(NULL, IDC_ARROW));
-    if (restore_focus && IsWindow(previous_focus)) SetForegroundWindow(previous_focus);
-    previous_focus = NULL;
+    /* Only restore a settings window that was visible before blackout. */
+    target = IsWindow(previous_settings) ? previous_settings : previous_focus;
+    if (restore_focus && IsWindow(previous_settings)) ShowWindow(previous_settings, SW_SHOWNORMAL);
+    if (restore_focus && IsWindow(target)) SetForegroundWindow(target);
+    previous_settings = previous_focus = NULL;
     PostMessageW(owner_window, AM_BLACKOUT_CHANGED, 0, 0);
 }
 
 static BOOL place_cover(void)
 {
-    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-    if (width <= 0 || height <= 0) return FALSE;
-    /* Include negative coordinates and monitors above/left of the primary. */
-    if (!SetWindowPos(cover, HWND_TOPMOST,
-        GetSystemMetrics(SM_XVIRTUALSCREEN), GetSystemMetrics(SM_YVIRTUALSCREEN),
-        width, height, SWP_NOACTIVATE | SWP_SHOWWINDOW)) return FALSE;
-    if (IsWindow(panel) &&
-        !SetWindowPos(panel, HWND_TOPMOST, 0, 0, 0, 0,
-            SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)) return FALSE;
-    return TRUE;
+    int left = GetSystemMetrics(SM_XVIRTUALSCREEN), top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN), height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    int primary_width = GetSystemMetrics(SM_CXSCREEN), primary_height = GetSystemMetrics(SM_CYSCREEN);
+    UINT dpi = GetDpiForWindow(cover);
+    int button_width = MulDiv(56, dpi ? (int)dpi : 96, 96);
+    int button_height = MulDiv(24, dpi ? (int)dpi : 96, 96);
+    int margin = MulDiv(12, dpi ? (int)dpi : 96, 96);
+    int x, y;
+    if (width <= 0 || height <= 0 || primary_width <= 0 || primary_height <= 0) return FALSE;
+    /* The primary monitor starts at (0,0); convert its bottom-right corner
+       into the virtual-desktop cover's client coordinates. */
+    x = -left + primary_width - button_width - margin;
+    y = -top + primary_height - button_height - margin;
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x + button_width > width || y + button_height > height) return FALSE;
+    /* The release control must be placed before exposing the cover. */
+    if (!SetWindowPos(release_button, NULL, x, y, button_width, button_height,
+            SWP_NOZORDER | SWP_NOACTIVATE | SWP_SHOWWINDOW)) return FALSE;
+    return SetWindowPos(cover, HWND_TOPMOST, left, top, width, height,
+        SWP_NOACTIVATE | SWP_SHOWWINDOW);
 }
 
 void am_blackout_refresh(void)
 {
-    if (active && !place_cover()) am_blackout_hide(FALSE);
+    if (active && !place_cover()) am_blackout_hide(TRUE);
 }
 
-BOOL am_blackout_toggle(HWND controls)
+BOOL am_blackout_toggle(HWND settings)
 {
     if (active) { am_blackout_hide(TRUE); return TRUE; }
-    /* Button mode works even if global input registration is unavailable. */
-    if (!cover || (!registered && !IsWindow(controls))) return FALSE;
+    if (!cover || !release_button) return FALSE;
     previous_focus = GetForegroundWindow();
-    panel = IsWindow(controls) ? controls : NULL;
-    panel_topmost = panel && (GetWindowLongPtrW(panel, GWL_EXSTYLE) & WS_EX_TOPMOST);
+    previous_settings = IsWindow(settings) && IsWindowVisible(settings) ? settings : NULL;
     active = TRUE;
-    if (!place_cover()) {
-        am_blackout_hide(TRUE);
-        return FALSE;
-    }
-    /* A denied focus request must not immediately undo a visible cover. */
-    SetForegroundWindow(panel ? panel : cover);
-    if (!panel) SetCursor(NULL);
+    if (!place_cover()) { am_blackout_hide(TRUE); return FALSE; }
+    if (previous_settings) ShowWindow(previous_settings, SW_HIDE);
+    /* A denied focus request does not cancel a visible, clickable cover. */
+    SetForegroundWindow(cover);
+    SetFocus(release_button);
+    SetCursor(NULL);
     UpdateWindow(cover);
     PostMessageW(owner_window, AM_BLACKOUT_CHANGED, 0, 0);
     return TRUE;
@@ -93,7 +77,15 @@ BOOL am_blackout_toggle(HWND controls)
 static LRESULT CALLBACK cover_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
     switch (msg) {
-    case WM_SETCURSOR: SetCursor(NULL); return TRUE;
+    case WM_COMMAND:
+        if (LOWORD(wp) == ID_RELEASE && HIWORD(wp) == BN_CLICKED) {
+            am_blackout_hide(TRUE);
+            return 0;
+        }
+        break;
+    case WM_SETCURSOR:
+        SetCursor((HWND)wp == release_button ? LoadCursorW(NULL, IDC_ARROW) : NULL);
+        return TRUE;
     case WM_ERASEBKGND: {
         RECT rect;
         GetClientRect(hwnd, &rect);
@@ -108,9 +100,9 @@ static LRESULT CALLBACK cover_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         return 0;
     }
     case WM_DISPLAYCHANGE: am_blackout_refresh(); return 0;
-    case WM_MOUSEACTIVATE: return MA_ACTIVATEANDEAT;
-    /* Neither real nor synthetic mouse input, nor Escape, dismisses the cover.
-       A normal close (e.g. Alt+F4) remains available as an emergency exit. */
+    /* The first click on Release must work even if another app has focus. */
+    case WM_MOUSEACTIVATE: return MA_ACTIVATE;
+    /* Mouse movement and Escape do not dismiss the cover; Alt+F4 still can. */
     case WM_CLOSE: am_blackout_hide(TRUE); return 0;
     }
     return DefWindowProcW(hwnd, msg, wp, lp);
@@ -119,7 +111,6 @@ static LRESULT CALLBACK cover_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 BOOL am_blackout_init(HINSTANCE instance, HWND owner)
 {
     WNDCLASSW wc = {0};
-    RAWINPUTDEVICE device = {0x01, 0x06, RIDEV_INPUTSINK, owner};
     owner_window = owner;
     wc.lpfnWndProc = cover_proc;
     wc.hInstance = instance;
@@ -127,23 +118,19 @@ BOOL am_blackout_init(HINSTANCE instance, HWND owner)
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     if (!RegisterClassW(&wc)) return FALSE;
     cover = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TOOLWINDOW, wc.lpszClassName,
-        L"Awake Mini", WS_POPUP, 0, 0, 0, 0, NULL, NULL, instance, NULL);
+        L"Awake Mini", WS_POPUP | WS_CLIPCHILDREN, 0, 0, 0, 0, NULL, NULL, instance, NULL);
     if (!cover) return FALSE;
-    /* Background raw keyboard input avoids reserved Win-key registration.
-       Do not suppress or inject keys. No keys are recorded or transmitted. */
-    registered = RegisterRawInputDevices(&device, 1, sizeof(device));
-    am_blackout_input_reset();
+    release_button = CreateWindowExW(0, L"Button", AM_TEXT(L"해제"),
+        WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_PUSHBUTTON,
+        0, 0, 0, 0, cover, (HMENU)(UINT_PTR)ID_RELEASE, instance, NULL);
+    if (!release_button) { DestroyWindow(cover); cover = NULL; return FALSE; }
+    SendMessageW(release_button, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), TRUE);
     return TRUE;
 }
 
 void am_blackout_cleanup(void)
 {
     am_blackout_hide(FALSE);
-    if (registered) {
-        RAWINPUTDEVICE device = {0x01, 0x06, RIDEV_REMOVE, NULL};
-        RegisterRawInputDevices(&device, 1, sizeof(device));
-    }
-    registered = FALSE;
-    if (cover) DestroyWindow(cover);
-    cover = NULL;
+    if (cover) DestroyWindow(cover); /* Also destroys the child button. */
+    cover = release_button = NULL;
 }

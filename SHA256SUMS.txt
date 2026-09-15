@@ -1,6 +1,6 @@
-89fff169c12a7b64a680997488f9ce8ecdf45b8726f438f7f4435f829c5b078c  downloads/v1.3.1/AwakeMini-v1.3.1-x86-auto.exe
-836ef1df0e7d881484eb8e80c36af271ab9e708116443f16e93d437add24a1d3  downloads/v1.3.1/AwakeMini-v1.3.1-x86-ko.exe
-b978bcbd0dea621dfcd9edca58ae5a0a0f5f42d47507433ada32c25012463e8c  downloads/v1.3.1/AwakeMini-v1.3.1-x86-en.exe
-cf8f93b4b192ed31a9653af47a4d0b0faf3a639fdf211d338c7f493d6ec1b2a5  downloads/v1.3.1/AwakeMini-v1.3.1-x64-auto.exe
-13c47399e4482dbfe1b1e14efd1bc26c012ae957e643edc87d9caf77e2a24a96  downloads/v1.3.1/AwakeMini-v1.3.1-x64-ko.exe
-ec8f72f374e08bcbf355f9cb95cf23046270ed4e6a1a722fc895a9541f9c1b79  downloads/v1.3.1/AwakeMini-v1.3.1-x64-en.exe
+2bef6b535348d8c205bbfe10aade62b86d97dda66750e00675ec63b4fc974073  downloads/v1.3.2/AwakeMini-v1.3.2-x86-auto.exe
+3495301624f085ff2b06af514fed7b43af654428f5fb602d4a5cf1a4d600ede3  downloads/v1.3.2/AwakeMini-v1.3.2-x86-ko.exe
+7cf57168f60ba7751bb60f3ff8c706102b1535bbeb98d72dc7917a1aa3ec9ba2  downloads/v1.3.2/AwakeMini-v1.3.2-x86-en.exe
+ceb27f595419fb2b846a488e338bd0eeac56c008b65bfa4da9b8b40b6b747715  downloads/v1.3.2/AwakeMini-v1.3.2-x64-auto.exe
+25a8d9716887e7e9bd7011bae8ef318a1701638acbefd3c285f63d82a970d0e0  downloads/v1.3.2/AwakeMini-v1.3.2-x64-ko.exe
+fdc82e700cc6b79f27b28251d7526eea1addecc9c8be789747902ddda0187af3  downloads/v1.3.2/AwakeMini-v1.3.2-x64-en.exe
