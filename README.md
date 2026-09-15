@@ -1,4 +1,26 @@
-# Awake Mini 1.3.2
+# Awake Mini 1.3.3-winb1
+
+## Win+B 실험 브랜치
+
+`experiment/win-b-hook` 전용 **1.3.3-winb1**입니다. 안정판 main과 분리되어 있습니다.
+
+- 왼쪽 또는 오른쪽 Windows 키를 누른 상태에서 **B**를 누르면 검은화면 ON/OFF가 전환됩니다. 길게 눌러도 한 번만 전환됩니다. B를 놓았다 다시 누르면 재전환됩니다.
+- 전용 스레드의 `WH_KEYBOARD_LL` 훅이 B의 누름·반복·뗌 이벤트를 차단합니다. 이전 Raw Input 방식과 달리 Windows의 Win+B 동작으로 전달되지 않도록 구현했습니다.
+- Windows 키와 다른 단축키는 통과시키며, Ctrl/Alt/Shift를 추가한 B 조합은 가로채지 않습니다. Windows 키를 놓을 때 시작 메뉴가 열리지 않도록 짧은 Ctrl 누름·뗌 입력을 보냅니다. DLL 주입, 드라이버, 다른 프로세스 변경은 없습니다.
+- 트레이 우클릭에서 **훅 설치됨 / 감지 횟수 / 보조 입력 실패 횟수** 또는 오류 번호를 확인할 수 있습니다. **Win+B 훅 다시 연결**로 훅을 재설치합니다. 감지 횟수는 전환 요청 횟수이며, 실제 화면 전환 성공을 보장하는 값은 아닙니다.
+- ‘훅 설치됨’은 등록 성공 기록입니다. Windows가 시간 초과로 훅을 조용히 제거했는지는 확인할 수 없습니다. 감지가 늘지 않으면 다시 연결해 보세요. 키를 모두 놓은 상태에서 다시 연결하세요.
+- 기존 **검은화면 버튼 / 트레이 메뉴 / 화면의 작은 해제 버튼**도 그대로 사용할 수 있습니다. 검은화면에서는 기존 대기 시간으로 마우스 입력을 유지하고 절전·화면 유지 요청을 활성화합니다.
+- 잠금 화면·보안 데스크톱에서는 동작하지 않습니다. 다른 키보드 훅, 권한 차이, 원격 접속 환경에 따라 입력 차단 또는 Ctrl 보조 입력이 제한될 수 있습니다.
+- **실제 Windows 단축키 가로채기와 시작 메뉴 억제는 아직 검증하지 못했습니다.** 이 환경의 검사는 모의 Win32 입력·생명주기 검사와 x86/x64 빌드입니다.
+
+### PC에서 확인할 순서
+
+1. 기존 Awake Mini를 트레이에서 종료하고 실험 EXE를 실행합니다. 둘을 동시에 실행할 수는 없습니다.
+2. 트레이 메뉴의 훅 상태를 확인합니다. Win+B를 눌러 검은화면 진입, 같은 조합으로 해제를 확인합니다.
+3. B를 길게 누르기, B 먼저 놓기, Win 먼저 놓기, 오른쪽 Win 키도 확인합니다. 시작 메뉴나 트레이 포커스가 함께 나타나는지도 확인하세요.
+4. Win 단독·Win+E·일반 B 입력을 확인합니다. 문제가 생기면 화면의 **해제** 버튼을 누르고 프로그램을 종료하면 됩니다.
+5. 실험 중에는 자동 실행 경로를 바꾸지 않아도 됩니다. 안정판으로 돌아가려면 실험판 종료 후 안정판을 실행합니다.
+
 
 작은 Windows 트레이 유틸리티입니다. 설치나 별도 런타임 없이 절전 방지, 화면 유지, 유휴 마우스 입력, 업데이트 일시중지 연장(시험), 로그인 시 자동 실행을 제공합니다.
 
@@ -8,23 +30,23 @@
 
 | 파일 | 언어 | 대상 |
 |---|---|---|
-| [AwakeMini-v1.3.2-x64-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x64-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x64-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x86-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.3.2-x86-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.3.2-x86-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
 
 자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
 
 
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.2/AwakeMini-v1.3.2-source.zip?raw=true)
+**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
 
 ## 검은 화면
 
 설정창의 **‘검은화면’ 버튼** 또는 **트레이 우클릭 → 검은화면**을 선택하면 모든 모니터를 검게 덮고 설정창을 숨깁니다. 검은 화면에는 **주 모니터 오른쪽 아래의 작은 ‘해제’ 버튼만** 표시합니다. **해제**를 클릭하면 원래 화면으로 돌아오며, 실행 전에 설정창이 열려 있었다면 다시 표시합니다.
 
-- Win+B 등 전역 단축키 기능과 키 입력 감지·등록은 제거했습니다.
+- 실험판에서는 위 Win+B 훅도 사용할 수 있습니다.
 - 화면 전체는 검게 표시하며, 포인터는 검은 배경에서 숨기고 해제 버튼 위에서 표시합니다. 마우스 이동이나 검은 배경 클릭으로는 해제되지 않습니다. 비상시 Alt+F4로도 해제할 수 있습니다.
 - 검은 화면 동안 절전 방지·화면 유지·유휴 마우스 입력을 임시 활성화합니다. **기존 대기 시간**(기본 2분)을 유지하며, 해제하면 원래 기능 선택으로 돌아갑니다.
 - 누르고 있는 키·버튼, 최근 사용자 입력, 잠금·보안 데스크톱 및 모의 입력 제한은 기존처럼 확인합니다. 업데이트 연장은 기존 ON/OFF 및 전체 일시정지 설정을 따릅니다.
@@ -93,6 +115,7 @@ sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
+python3 src/test-win-b-hook.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
@@ -111,3 +134,6 @@ cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 - [업데이트 일시중지와 상태값](https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb#pause-quality-updates)
 
 라이선스: [MIT](LICENSE.txt)
+
+- [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
+- [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)

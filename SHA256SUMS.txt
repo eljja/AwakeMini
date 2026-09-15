@@ -1,6 +1,6 @@
-2bef6b535348d8c205bbfe10aade62b86d97dda66750e00675ec63b4fc974073  downloads/v1.3.2/AwakeMini-v1.3.2-x86-auto.exe
-3495301624f085ff2b06af514fed7b43af654428f5fb602d4a5cf1a4d600ede3  downloads/v1.3.2/AwakeMini-v1.3.2-x86-ko.exe
-7cf57168f60ba7751bb60f3ff8c706102b1535bbeb98d72dc7917a1aa3ec9ba2  downloads/v1.3.2/AwakeMini-v1.3.2-x86-en.exe
-ceb27f595419fb2b846a488e338bd0eeac56c008b65bfa4da9b8b40b6b747715  downloads/v1.3.2/AwakeMini-v1.3.2-x64-auto.exe
-25a8d9716887e7e9bd7011bae8ef318a1701638acbefd3c285f63d82a970d0e0  downloads/v1.3.2/AwakeMini-v1.3.2-x64-ko.exe
-fdc82e700cc6b79f27b28251d7526eea1addecc9c8be789747902ddda0187af3  downloads/v1.3.2/AwakeMini-v1.3.2-x64-en.exe
+f8ba80a09d53c78ca62a3ce91b08354f4a0afee5117ced35c9280434f7a8e233  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe
+903a7b7d6d19783f87be27382635fa71b5d61f7a92040a5470be682291ecfe6b  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe
+82311af2582170b40b26dea917e57331cccd53b43db140177859567197ecb14a  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe
+2c20822253d9eec476828a8efc4e7d340047391fc3f4fdd716273d4b0d358169  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe
+6c0bd9189936f5172fe8fadc45322b7553057e87fc4e8f51f2bd328f6be1f48e  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe
+90e15dbbf3a326a505119cc5a080322ee4caf96ae0548dd9c9d0f61abe973c80  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe
