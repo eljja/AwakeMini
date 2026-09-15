@@ -1,4 +1,4 @@
-# Awake Mini 1.3.0
+# Awake Mini 1.3.1
 
 A small Windows tray utility providing keep-awake requests, display keep-on, idle mouse input, experimental update pause renewal, and launch at sign-in. No installer or additional runtime is required.
 
@@ -8,17 +8,17 @@ A small Windows tray utility providing keep-awake requests, display keep-on, idl
 
 | File | Language | Target |
 |---|---|---|
-| [AwakeMini-v1.3.0-x64-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
-| [AwakeMini-v1.3.0-x64-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
-| [AwakeMini-v1.3.0-x64-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-en.exe?raw=true) | English | 64-bit Windows |
-| [AwakeMini-v1.3.0-x86-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.0-x86-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.0-x86-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.1-x64-auto.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
+| [AwakeMini-v1.3.1-x64-ko.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
+| [AwakeMini-v1.3.1-x64-en.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-en.exe?raw=true) | English | 64-bit Windows |
+| [AwakeMini-v1.3.1-x86-auto.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.1-x86-ko.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.1-x86-en.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
 
 The automatic build uses Korean when the current user's Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart the app after changing the display language. Fixed-language builds are separate executables and need no command-line options. Run only one executable at a time.
 
 
-**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.0/AwakeMini-v1.3.0-source.zip?raw=true)
+**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.1/AwakeMini-v1.3.1-source.zip?raw=true)
 
 ## Quick start
 
@@ -36,16 +36,19 @@ The automatic build uses Korean when the current user's Windows **display langua
 - Screen saver prevention may not work where synthetic input is restricted.
 - Pause all applies to the current session. Other settings are saved.
 
-## Black screen — Win + Backspace
+## Black screen — Win + B
 
-Press **Win + Backspace** to cover the entire virtual desktop (all monitors) in black and hide the pointer. Press **the same shortcut again** to return. Mouse movements, clicks, and Escape do not dismiss it. The tray menu also lists the shortcut. Alt+F4 can close the cover as an emergency exit.
+Press **Win + B**, then release both keys, to cover the entire virtual desktop (all monitors) in black and hide the pointer. Press and release **the same shortcut again** to return. Mouse movements, clicks, and Escape do not dismiss it. Alt+F4 can close the cover as an emergency exit.
+
+The **Black screen** button beside **Keep PC awake** provides a direct test. Button mode keeps the settings window above the black background and changes the same button to **Show screen**. Click it again to return. Minimizing or closing settings during this test also dismisses the cover. No Apply click is needed, and the settings window retains its original size.
 
 - The display stays powered on. This does not request display power-off, a screen saver, lock, sign-out, or sleep. LCD backlights remain on.
 - While black, keep-system-awake, keep-display-on, and idle mouse input are temporarily enabled, even if those settings were OFF or Pause all was selected. Exiting restores the saved selection without changing it.
 - Mouse input uses the **existing idle delay** (default 2 minutes). It still skips held keys/buttons, recent activity, locked/secure desktops, and synthetic-input restrictions. Simulated movement never dismisses the cover.
 - Update renewal continues to follow its own ON/OFF and Pause all settings.
 - Monitor layout changes resize the cover. Lock, session disconnect, secure desktop, suspend, or app exit removes it; it does not automatically reappear after sign-in/resume.
-- The app must successfully register Win+Backspace before it permits blackout. If registration fails, the tray menu displays an unavailable status; it does not override another program's shortcut.
+- The shortcut uses background Raw Input instead of registering a reserved Win-key combination. It does not suppress or inject keyboard input; Explorer's default notification-area focus action may briefly occur. Both Win keys work. Ctrl/Alt/Shift combinations are ignored.
+- Button mode remains available if shortcut input registration fails; the tray menu reports that condition. A denied foreground-focus request no longer immediately cancels a visible cover.
 - This is a visual cover, not a secure lock screen. System screens and other topmost applications may appear over it. Organization-enforced locking and screen saver policies still apply.
 
 ## Run at sign-in
@@ -92,6 +95,8 @@ sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
+cc -std=c11 -Wall -Wextra -Werror src/test-blackout-keys.c -o test-blackout-keys
+./test-blackout-keys
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```

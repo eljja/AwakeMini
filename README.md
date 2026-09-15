@@ -1,4 +1,4 @@
-# Awake Mini 1.3.0
+# Awake Mini 1.3.1
 
 작은 Windows 트레이 유틸리티입니다. 설치나 별도 런타임 없이 절전 방지, 화면 유지, 유휴 마우스 입력, 업데이트 일시중지 연장(시험), 로그인 시 자동 실행을 제공합니다.
 
@@ -8,28 +8,31 @@
 
 | 파일 | 언어 | 대상 |
 |---|---|---|
-| [AwakeMini-v1.3.0-x64-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.3.0-x64-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.0-x64-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.0-x86-auto.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.3.0-x86-ko.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.3.0-x86-en.exe](downloads/v1.3.0/AwakeMini-v1.3.0-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.1-x64-auto.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
+| [AwakeMini-v1.3.1-x64-ko.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.1-x64-en.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.1-x86-auto.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
+| [AwakeMini-v1.3.1-x86-ko.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.1-x86-en.exe](downloads/v1.3.1/AwakeMini-v1.3.1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
 
 자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
 
 
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.0/AwakeMini-v1.3.0-source.zip?raw=true)
+**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.1/AwakeMini-v1.3.1-source.zip?raw=true)
 
-## 검은 화면 — Win + Backspace
+## 검은 화면 — Win + B
 
-**Win + Backspace**를 누르면 모든 모니터를 검은 창으로 덮고 커서를 숨깁니다. **같은 키를 다시 누르면 해제**됩니다. 마우스 이동·클릭이나 Esc로는 해제되지 않습니다. 트레이 메뉴에도 단축키를 표시합니다. 비상시 Alt+F4로 검은 창을 닫을 수 있습니다.
+**Win + B**를 누른 뒤 두 키를 놓으면 모든 모니터를 검은 창으로 덮고 커서를 숨깁니다. **같은 조합을 다시 눌렀다 놓으면 해제**됩니다. 마우스 이동·클릭이나 Esc로는 해제되지 않습니다. 비상시 Alt+F4로 검은 창을 닫을 수 있습니다.
+
+설정창의 **절전 방지 오른쪽에 있는 ‘검은화면’ 버튼**으로도 바로 시험할 수 있습니다. 버튼으로 실행하면 설정창을 검은 배경 위에 남기고 버튼 이름을 **‘검은화면 해제’**로 바꿉니다. 같은 버튼을 다시 누르면 해제됩니다. 이 시험 중 설정창을 최소화하거나 닫아도 검은 화면을 해제합니다. 별도로 적용 버튼을 누를 필요는 없습니다. 설정창 크기는 그대로입니다.
 
 - 디스플레이 전원은 켜진 상태입니다. 화면 전원 끄기·화면보호기·잠금·로그아웃·절전을 요청하지 않습니다. LCD 백라이트는 계속 켜져 있습니다.
 - 검은 화면 동안 절전 방지·화면 유지·유휴 마우스 입력을 임시 활성화합니다. 기존에 OFF 또는 전체 일시정지였어도 적용하며, 해제하면 원래 선택으로 돌아갑니다. 저장값은 바꾸지 않습니다.
 - 마우스는 **기존 대기 시간**(기본 2분)을 그대로 사용합니다. 최근 입력, 누르고 있는 키·버튼, 잠금·보안 데스크톱, 모의 입력 제한은 기존처럼 확인합니다. 자동 마우스 이동으로 검은 화면이 해제되지 않습니다.
 - 업데이트 연장은 기존 ON/OFF 및 전체 일시정지 설정을 따릅니다.
 - 모니터 배치 변경 시 덮는 영역을 다시 맞춥니다. 잠금·세션 연결 해제·보안 데스크톱·절전 진입·프로그램 종료 시 검은 창을 정리하며, 로그인·복귀 후 자동으로 다시 표시하지 않습니다.
-- 같은 키로 해제할 수 있도록 단축키 등록 성공 시에만 검은 화면 진입을 허용합니다. 실패하면 트레이 메뉴에 사용 불가 상태를 표시하며 다른 프로그램의 단축키를 덮어쓰지 않습니다.
+- Win+B는 예약된 단축키 등록 대신 백그라운드 Raw Input으로 감지합니다. 키 입력을 차단하거나 추가 키를 주입하지 않으므로 Windows 기본 트레이 초점 이동이 잠깐 나타날 수 있습니다. 왼쪽·오른쪽 Win 키를 지원하며, Ctrl/Alt/Shift를 함께 누른 조합은 처리하지 않습니다.
+- 단축키 입력 등록 실패 시에도 설정창 버튼은 별도로 동작합니다. 단축키 실패 상태는 트레이 메뉴에 표시합니다. 포커스 요청 실패만으로 검은 창을 즉시 취소하지 않습니다.
 - 검은 창은 보안 잠금 화면이 아닙니다. 시스템 화면이나 다른 최상위 창이 위에 나타날 수 있으며, 회사에서 강제하는 잠금·화면보호기 정책은 그대로 적용됩니다.
 - 실제 Windows의 단축키, 검은 화면 렌더링, 혼합 DPI 다중 모니터 동작은 이 환경에서 검증하지 못했습니다.
 
@@ -93,6 +96,8 @@ sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
+cc -std=c11 -Wall -Wextra -Werror src/test-blackout-keys.c -o test-blackout-keys
+./test-blackout-keys
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```

@@ -185,8 +185,10 @@ static void show_menu(void)
     AppendMenuW(menu, MF_STRING, ID_SETTINGS, AM_TEXT(L"설정 열기 (더블클릭)"));
     AppendMenuW(menu, MF_STRING | (blackout_ready ? 0 : MF_GRAYED) |
         (am_blackout_active() ? MF_CHECKED : 0), ID_BLACKOUT,
-        blackout_ready ? AM_TEXT(L"검은 화면 켜기/끄기 · Win+Backspace") :
-        AM_TEXT(L"검은 화면 사용 불가 · 단축키/창 등록 실패"));
+        blackout_ready ? AM_TEXT(L"검은 화면 켜기/끄기 · Win+B") :
+        AM_TEXT(L"검은 화면 사용 불가 · 창 생성 실패"));
+    if (!am_blackout_shortcut_ready())
+        AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, AM_TEXT(L"Win+B 사용 불가 · 설정의 검은화면 버튼 사용"));
     AppendMenuW(menu, MF_SEPARATOR, 0, NULL);
     AppendMenuW(menu, MF_STRING | (sleep_on ? MF_CHECKED : 0), ID_SLEEP, AM_TEXT(L"절전 방지 · 무기한 유지"));
     AppendMenuW(menu, MF_STRING | (display_on ? MF_CHECKED : 0) | (!sleep_on ? MF_GRAYED : 0), ID_DISPLAY, AM_TEXT(L"화면 켜기 유지"));
@@ -212,9 +214,17 @@ static void show_menu(void)
     DestroyMenu(menu);
     if (command) SendMessageW(window, WM_COMMAND, command, 0);
 }
+static void refresh_blackout_button(void)
+{
+    if (!settings) return;
+    EnableWindow(GetDlgItem(settings, 1012), blackout_ready);
+    SetDlgItemTextW(settings, 1012,
+        am_blackout_active() ? AM_TEXT(L"검은화면 해제") : AM_TEXT(L"검은화면"));
+}
 static void refresh_settings(void)
 {
     if (!settings) return;
+    refresh_blackout_button();
     CheckDlgButton(settings, 1001, sleep_on ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(settings, 1002, display_on ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(settings, 1003, mouse_on ? BST_CHECKED : BST_UNCHECKED);
@@ -243,6 +253,11 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             (HIWORD(wp) == BN_CLICKED || HIWORD(wp) == EN_CHANGE))
             SetDlgItemTextW(hwnd, IDOK, AM_TEXT(L"적용"));
         switch (LOWORD(wp)) {
+        case 1012:
+            available = desktop_available();
+            if (available) am_blackout_toggle(hwnd);
+            update_power(); update_tray(); refresh_blackout_button();
+            return TRUE;
         case 1001:
             EnableWindow(GetDlgItem(hwnd, 1002), IsDlgButtonChecked(hwnd, 1001) == BST_CHECKED);
             return TRUE;
@@ -291,12 +306,16 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             }
             return TRUE;
         }
-        case IDCANCEL: ShowWindow(hwnd, SW_HIDE); return TRUE;
+        case IDCANCEL:
+            if (am_blackout_testing()) am_blackout_hide(FALSE);
+            ShowWindow(hwnd, SW_HIDE); return TRUE;
         case 1010: up_open_settings(hwnd); return TRUE;
         case 1007: SendMessageW(window, WM_COMMAND, ID_EXIT, 0); return TRUE;
         }
         break;
-    case WM_CLOSE: ShowWindow(hwnd, SW_HIDE); return TRUE;
+    case WM_CLOSE:
+        if (am_blackout_testing()) am_blackout_hide(FALSE);
+        ShowWindow(hwnd, SW_HIDE); return TRUE;
     case WM_DESTROY: settings = NULL; return TRUE;
     }
     return FALSE;
@@ -320,14 +339,16 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     unsigned command;
     if (taskbar_created && msg == taskbar_created) { tray_added = FALSE; update_tray(); return 0; }
     switch (msg) {
-    case WM_HOTKEY:
-        if (wp != AM_BLACKOUT_HOTKEY) return 0;
+    case WM_INPUT:
+        am_blackout_raw_input(lp);
+        break; /* DefWindowProc performs raw-input cleanup. */
+    case AM_BLACKOUT_TOGGLE:
         /* Refresh session state before accepting a global shortcut. */
         available = desktop_available();
-        if (available) am_blackout_toggle();
+        if (available) am_blackout_toggle(NULL);
         update_power(); update_tray(); return 0;
     case AM_BLACKOUT_CHANGED:
-        update_power(); update_tray(); return 0;
+        refresh_blackout_button(); update_power(); update_tray(); return 0;
     case WM_DISPLAYCHANGE:
         am_blackout_refresh(); return 0;
     case WM_TIMER:
@@ -345,7 +366,8 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         command = LOWORD(wp);
         if (command == ID_BLACKOUT) {
             available = desktop_available();
-            if (available) am_blackout_toggle();
+            if (!am_blackout_shortcut_ready()) show_settings();
+            if (available) am_blackout_toggle(am_blackout_shortcut_ready() ? NULL : settings);
             update_power(); update_tray(); return 0;
         }
         if (command == ID_UPDATE_SETTINGS) { up_open_settings(hwnd); return 0; }
@@ -353,7 +375,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (command == ID_EXIT) { DestroyWindow(hwnd); return 0; }
         if (command == ID_ABOUT) {
             MessageBoxW(hwnd,
-                AM_TEXT(L"Awake Mini 1.3.0\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\nWin+Backspace: 검은 화면 켜기/끄기\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
+                AM_TEXT(L"Awake Mini 1.3.1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\nWin+B: 검은 화면 켜기/끄기\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
                 APP, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
@@ -367,6 +389,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         save_settings(); update_power(); up_tick(update_on && !paused, TRUE);
         update_tray(); refresh_settings(); return 0;
     case WM_WTSSESSION_CHANGE:
+        am_blackout_input_reset();
         if (wp == WTS_SESSION_LOCK || wp == WTS_CONSOLE_DISCONNECT || wp == WTS_REMOTE_DISCONNECT) locked = TRUE;
         if (wp == WTS_SESSION_UNLOCK || wp == WTS_CONSOLE_CONNECT || wp == WTS_REMOTE_CONNECT) locked = FALSE;
         available = desktop_available(); last_attempt = GetTickCount();
@@ -378,6 +401,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             SetThreadExecutionState(ES_CONTINUOUS); applied = 0xffffffffu;
         } else if (wp == PBT_APMRESUMEAUTOMATIC || wp == PBT_APMRESUMESUSPEND) {
             last_attempt = GetTickCount(); available = desktop_available();
+            am_blackout_input_reset();
             applied = 0xffffffffu; update_power(); update_tray();
         }
         return TRUE;

@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.3.1",
   "native_windows_tested": false,
   "blackout_native_tested": false,
   "logon_startup_verified": false,
@@ -10,20 +10,67 @@
   ],
   "checks": [
     "six x86/x64 auto/ko/en strict-warning builds with no diagnostics",
-    "all PE resources walked and bounds checked; version, manifest, GUI subsystem, architecture and system DLL imports checked",
-    "67 translation entries: all UI labels covered and format arguments match",
-    "actual blackout lifecycle with mocked Windows: negative monitor coordinates, resize, toggle, missing registration, failed placement/focus, invalid dimensions, focus restoration, session cleanup and idempotent exit",
-    "actual app power and mouse functions with mocked Windows: temporary enablement, unchanged settings, original idle delay, move-and-return input, held-key/blocked-input/session gates, and original behavior restored on exit",
-    "existing power and tick-wrap scheduling tests passed"
+    "PE resources walked and bounds checked; version, manifest, GUI subsystem, architecture and system DLL imports checked",
+    "70 translations: UI labels covered and format arguments match; 15 controls inside 206x133 DLU with no overlaps",
+    "actual blackout lifecycle and app power/mouse functions with mocked Windows: independent button mode without raw-input registration, panel layering/restoration, focus denial, negative monitor coordinates, resize, placement failure, invalid dimensions, raw-input parsing and cleanup; existing idle interval and permission gates preserved",
+    "Win+B key matcher: both Win keys, release orders, autorepeat, modifiers, held B, chord cancellation and both Win keys held"
   ],
   "historical_unchanged_checks": [
     "v1.2.0 startup registration and update policy/date regression tests; implementation unchanged"
   ],
   "executables": [
     {
-      "filename": "AwakeMini-v1.3.0-x86-auto.exe",
+      "filename": "AwakeMini-v1.3.1-x86-auto.exe",
+      "bytes": 72192,
+      "sha256": "89fff169c12a7b64a680997488f9ce8ecdf45b8726f438f7f4435f829c5b078c",
+      "dlls": [
+        "ADVAPI32.dll",
+        "GDI32.dll",
+        "KERNEL32.dll",
+        "ktmw32.dll",
+        "msvcrt.dll",
+        "SHELL32.dll",
+        "USER32.dll",
+        "WTSAPI32.dll"
+      ],
+      "resource_leaves_checked": 12
+    },
+    {
+      "filename": "AwakeMini-v1.3.1-x86-ko.exe",
+      "bytes": 71680,
+      "sha256": "836ef1df0e7d881484eb8e80c36af271ab9e708116443f16e93d437add24a1d3",
+      "dlls": [
+        "ADVAPI32.dll",
+        "GDI32.dll",
+        "KERNEL32.dll",
+        "ktmw32.dll",
+        "msvcrt.dll",
+        "SHELL32.dll",
+        "USER32.dll",
+        "WTSAPI32.dll"
+      ],
+      "resource_leaves_checked": 12
+    },
+    {
+      "filename": "AwakeMini-v1.3.1-x86-en.exe",
+      "bytes": 71680,
+      "sha256": "b978bcbd0dea621dfcd9edca58ae5a0a0f5f42d47507433ada32c25012463e8c",
+      "dlls": [
+        "ADVAPI32.dll",
+        "GDI32.dll",
+        "KERNEL32.dll",
+        "ktmw32.dll",
+        "msvcrt.dll",
+        "SHELL32.dll",
+        "USER32.dll",
+        "WTSAPI32.dll"
+      ],
+      "resource_leaves_checked": 12
+    },
+    {
+      "filename": "AwakeMini-v1.3.1-x64-auto.exe",
       "bytes": 69120,
-      "sha256": "b9fe9f36deaa2ac6ac2a029c064a72edb2e93046ad72b7c853fdcbf40c10566c",
+      "sha256": "cf8f93b4b192ed31a9653af47a4d0b0faf3a639fdf211d338c7f493d6ec1b2a5",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -37,9 +84,9 @@
       "resource_leaves_checked": 12
     },
     {
-      "filename": "AwakeMini-v1.3.0-x86-ko.exe",
+      "filename": "AwakeMini-v1.3.1-x64-ko.exe",
       "bytes": 69120,
-      "sha256": "b38702deb22fca603eb04b8ac9d701056e79233d4a8669b5db4b82b5cbd5ef2e",
+      "sha256": "13c47399e4482dbfe1b1e14efd1bc26c012ae957e643edc87d9caf77e2a24a96",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -53,57 +100,9 @@
       "resource_leaves_checked": 12
     },
     {
-      "filename": "AwakeMini-v1.3.0-x86-en.exe",
+      "filename": "AwakeMini-v1.3.1-x64-en.exe",
       "bytes": 69120,
-      "sha256": "9f22c4c232e203c92f765bf6564c75fa5070dd13ebcdbfef4641f3d586ca45a6",
-      "dlls": [
-        "ADVAPI32.dll",
-        "GDI32.dll",
-        "KERNEL32.dll",
-        "ktmw32.dll",
-        "msvcrt.dll",
-        "SHELL32.dll",
-        "USER32.dll",
-        "WTSAPI32.dll"
-      ],
-      "resource_leaves_checked": 12
-    },
-    {
-      "filename": "AwakeMini-v1.3.0-x64-auto.exe",
-      "bytes": 66560,
-      "sha256": "5fee8923667ebcebc28c090fc81de26f029466e9cb9ec93ff854f6196f44b87f",
-      "dlls": [
-        "ADVAPI32.dll",
-        "GDI32.dll",
-        "KERNEL32.dll",
-        "ktmw32.dll",
-        "msvcrt.dll",
-        "SHELL32.dll",
-        "USER32.dll",
-        "WTSAPI32.dll"
-      ],
-      "resource_leaves_checked": 12
-    },
-    {
-      "filename": "AwakeMini-v1.3.0-x64-ko.exe",
-      "bytes": 66560,
-      "sha256": "a175d52d02df9f3e92dbfc19529f53efc67805bbbde40382ab08aafac1bf6d40",
-      "dlls": [
-        "ADVAPI32.dll",
-        "GDI32.dll",
-        "KERNEL32.dll",
-        "ktmw32.dll",
-        "msvcrt.dll",
-        "SHELL32.dll",
-        "USER32.dll",
-        "WTSAPI32.dll"
-      ],
-      "resource_leaves_checked": 12
-    },
-    {
-      "filename": "AwakeMini-v1.3.0-x64-en.exe",
-      "bytes": 66560,
-      "sha256": "f212969a63d61f07edfbec0459a95ee25d0a181701d9300af70eed7e5a22b33e",
+      "sha256": "ec8f72f374e08bcbf355f9cb95cf23046270ed4e6a1a722fc895a9541f9c1b79",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
