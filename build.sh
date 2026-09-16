@@ -17,7 +17,7 @@ for arch in i686 x86_64; do
   target="$base-$language.exe"
   "$prefix-gcc" -DAM_FORCE_LANGUAGE="$force" -std=c11 -Os -s -Wall -Wextra -Werror -fno-ident \
     -ffunction-sections -fdata-sections -static-libgcc -mwindows \
-    src/awake-mini.c src/update-pause.c src/startup.c src/language.c src/blackout.c "build/$arch-res.o" -o "dist/$target" \
+    src/awake-mini.c src/update-pause.c src/startup.c src/language.c src/blackout.c src/win-b-hook.c "build/$arch-res.o" -o "dist/$target" \
     -Wl,--gc-sections,--no-insert-timestamp,--dynamicbase,--nxcompat \
     -Wl,--major-subsystem-version,6,--minor-subsystem-version,1 \
     -lgdi32 -luser32 -lshell32 -ladvapi32 -lwtsapi32 -lktmw32

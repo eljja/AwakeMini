@@ -1,4 +1,27 @@
-# Awake Mini 1.3.2
+# Awake Mini 1.3.3-winb1
+
+## Toggle black screen with Win+B
+
+While the app is running in the tray, press **Windows key + B** to cover all monitors in black. **Press the same shortcut again to restore** the screen. Both left and right Windows keys are supported.
+
+| Control | Action |
+|---|---|
+| Win+B | Toggle black screen on / off |
+| Black screen in settings or right-click tray → Black screen | Toggle black screen |
+| Small Restore button at the bottom-right of the black screen | Return to the original screen |
+
+- Holding B toggles once. Release B and press it again to toggle again.
+- While the app runs, black screen replaces the normal Windows Win+B notification-area focus action. Exiting the app restores the default action.
+- During blackout, **keep-awake, keep-display-on and mouse input at the existing idle delay** stay enabled. Restoring returns to the original feature choices. No lock or sign-out is requested.
+- The tray menu shows **hook installation status, detected count and mask failure count**. If the shortcut stops responding, release all keys and choose **Reconnect Win+B hook**.
+
+On 2026-09-16, the user confirmed Win+B working on their PC and approved promotion to main. The tested executables are preserved, so the version and filenames remain **1.3.3-winb1**. The exact OS build and executable architecture were not separately recorded.
+
+### Shortcut implementation notes
+
+A dedicated-thread `WH_KEYBOARD_LL` hook consumes B down, repeats and up. Windows key events and other shortcuts pass through; Ctrl/Alt/Shift+B variants are not captured. A brief injected Ctrl down/up masks the Start menu when Win is released. No DLL injection or driver is used.
+
+Installed records successful registration; detected counts toggle requests. Silent Windows hook removal after timeout cannot be directly detected. Lock screens and secure desktops are excluded. Other hooks, privilege differences and remote sessions need separate validation.
 
 A small Windows tray utility providing keep-awake requests, display keep-on, idle mouse input, experimental update pause renewal, and launch at sign-in. No installer or additional runtime is required.
 
@@ -8,17 +31,17 @@ A small Windows tray utility providing keep-awake requests, display keep-on, idl
 
 | File | Language | Target |
 |---|---|---|
-| [AwakeMini-v1.3.2-x64-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
-| [AwakeMini-v1.3.2-x64-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
-| [AwakeMini-v1.3.2-x64-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-en.exe?raw=true) | English | 64-bit Windows |
-| [AwakeMini-v1.3.2-x86-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.2-x86-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.2-x86-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | English | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
 
 The automatic build uses Korean when the current user's Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart the app after changing the display language. Fixed-language builds are separate executables and need no command-line options. Run only one executable at a time.
 
 
-**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.2/AwakeMini-v1.3.2-source.zip?raw=true)
+**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
 
 ## Quick start
 
@@ -38,16 +61,16 @@ The automatic build uses Korean when the current user's Windows **display langua
 
 ## Black screen
 
-Use **Black screen** in settings or **right-click the tray → Black screen**. All monitors are covered in black and the settings window is hidden. Only a small **Restore** button appears at the bottom-right of the primary monitor. Click **Restore** to return. Settings reappear only if they were visible before entering blackout.
+Use **Win+B**, **Black screen** in settings, or **right-click the tray → Black screen**. All monitors are covered in black and the settings window is hidden. Only a small **Restore** button appears at the bottom-right of the primary monitor. Click **Restore** to return. Settings reappear only if they were visible before entering blackout.
 
-- Global Win+B shortcuts and keyboard input registration/detection have been removed.
+- **Win+B** also toggles black screen on and off.
 - The pointer is hidden over the black background and visible over Restore. Mouse movement or background clicks do not dismiss blackout. Alt+F4 remains an emergency exit.
 - Keep-system-awake, keep-display-on and idle mouse input are temporarily enabled using the **existing idle delay** (default 2 minutes). Exiting restores the original feature choices.
 - Held keys/buttons, recent input, locked/secure desktops and synthetic-input restrictions retain their existing behavior. Update renewal follows its existing ON/OFF and Pause all settings.
 - No display-power-off, lock or sign-out request is made. LCD backlights stay on; organization-enforced lock policies still apply.
 - Monitor changes reposition the cover and Restore button. Lock, session disconnect, secure desktop, suspend and exit remove the cover.
 - Settings remain 206×133 DLU. Restore is 56×24px at 96 DPI and scales with DPI.
-- Native Windows rendering, button interaction and mixed-DPI monitor behavior have not been tested in this environment.
+- The user confirmed button and Win+B operation. Native Windows UI and mixed-DPI behavior have not been directly tested in the development environment.
 
 ## Run at sign-in
 
@@ -82,7 +105,7 @@ The app does not change update policies, services, scheduled tasks, or ACLs. Sta
 - Settings dialog: 206×133 DLU. Pixel dimensions depend on DPI and font metrics.
 - Uses Windows system DLLs; no separate .NET or Python installation is needed to run the app.
 - Validation covers strict compilation of all six EXEs, language strings and placeholders, mocked startup registration, and update policy and date boundary checks. See `VERIFICATION.json` for the actual recorded checks.
-- Native Windows blackout rendering, hotkey behavior, mixed-DPI displays, automatic launch after sign-in, and organization-specific update behavior have not been tested in this environment.
+- User-reported Win+B operation confirmed on 2026-09-16. Direct native Windows execution in the development environment, mixed-DPI behavior, launch after sign-in and organization-specific update behavior remain unverified.
 
 ## Source and build
 
@@ -93,6 +116,7 @@ sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
+python3 src/test-win-b-hook.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
@@ -111,3 +135,6 @@ Renewal state: `HKLM\SOFTWARE\AwakeMini\UpdatePauseV1` (64-bit registry view)
 - [Update pause behavior and status values](https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb#pause-quality-updates)
 
 License: [MIT](LICENSE.txt)
+
+- [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
+- [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)

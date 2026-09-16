@@ -1,4 +1,27 @@
-# Awake Mini 1.3.2
+# Awake Mini 1.3.3-winb1
+
+## Win+B로 검은화면 켜기·끄기
+
+프로그램이 트레이에서 실행 중일 때 **Windows 키 + B**를 누르면 모든 모니터를 검은 화면으로 덮습니다. **같은 키를 다시 누르면 해제**됩니다. 왼쪽·오른쪽 Windows 키를 지원합니다.
+
+| 조작 | 동작 |
+|---|---|
+| Win+B | 검은화면 켜기 / 끄기 |
+| 설정창의 검은화면 버튼 또는 트레이 우클릭 → 검은화면 | 검은화면 전환 |
+| 검은 화면 오른쪽 아래의 작은 해제 버튼 | 원래 화면으로 복귀 |
+
+- B를 길게 눌러도 한 번만 전환됩니다. 다시 전환하려면 B를 놓았다 누르세요.
+- 실행 중에는 Windows의 기본 Win+B(알림 영역 포커스 이동)를 검은화면 기능으로 사용합니다. 프로그램을 종료하면 기본 동작으로 돌아갑니다.
+- 검은화면에서도 **절전 방지·화면 켜기 유지·기존 대기 시간의 마우스 입력**이 활성화됩니다. 해제하면 원래 기능 선택으로 복귀합니다. 화면 잠금이나 로그아웃을 요청하지 않습니다.
+- 트레이 우클릭에서 **훅 설치 상태·감지 횟수·보조 입력 실패 횟수**를 확인할 수 있습니다. 반응이 없으면 키를 모두 놓고 **Win+B 훅 다시 연결**을 선택하세요.
+
+2026-09-16 사용자가 실제 PC에서 Win+B 동작을 확인하여 main에 반영했습니다. 확인한 실행 파일을 그대로 제공하므로 버전·파일명은 **1.3.3-winb1**을 유지합니다. OS 빌드와 실행 아키텍처 등 세부 환경은 별도로 수집하지 않았습니다.
+
+### 단축키 동작 참고
+
+전용 스레드의 `WH_KEYBOARD_LL` 훅으로 B의 누름·반복·뗌 이벤트를 차단합니다. Windows 키와 다른 단축키는 통과시키며 Ctrl/Alt/Shift를 추가한 B 조합은 가로채지 않습니다. Windows 키를 놓을 때 시작 메뉴가 열리지 않도록 짧은 Ctrl 누름·뗌 입력을 보냅니다. DLL 주입이나 드라이버는 사용하지 않습니다.
+
+‘훅 설치됨’은 등록 성공 기록이고, 감지 횟수는 전환 요청 횟수입니다. Windows가 시간 초과로 훅을 제거했는지는 직접 확인할 수 없습니다. 잠금·보안 데스크톱에서는 동작하지 않으며, 다른 훅·권한 차이·원격 접속 환경에 따른 차이는 별도 검증이 필요합니다.
 
 작은 Windows 트레이 유틸리티입니다. 설치나 별도 런타임 없이 절전 방지, 화면 유지, 유휴 마우스 입력, 업데이트 일시중지 연장(시험), 로그인 시 자동 실행을 제공합니다.
 
@@ -8,30 +31,30 @@
 
 | 파일 | 언어 | 대상 |
 |---|---|---|
-| [AwakeMini-v1.3.2-x64-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x64-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x64-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.2-x86-auto.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.3.2-x86-ko.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.3.2-x86-en.exe](downloads/v1.3.2/AwakeMini-v1.3.2-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
 
 자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
 
 
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.2/AwakeMini-v1.3.2-source.zip?raw=true)
+**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
 
 ## 검은 화면
 
-설정창의 **‘검은화면’ 버튼** 또는 **트레이 우클릭 → 검은화면**을 선택하면 모든 모니터를 검게 덮고 설정창을 숨깁니다. 검은 화면에는 **주 모니터 오른쪽 아래의 작은 ‘해제’ 버튼만** 표시합니다. **해제**를 클릭하면 원래 화면으로 돌아오며, 실행 전에 설정창이 열려 있었다면 다시 표시합니다.
+**Win+B**, 설정창의 **‘검은화면’ 버튼** 또는 **트레이 우클릭 → 검은화면**을 사용하면 모든 모니터를 검게 덮고 설정창을 숨깁니다. 검은 화면에는 **주 모니터 오른쪽 아래의 작은 ‘해제’ 버튼만** 표시합니다. **해제**를 클릭하면 원래 화면으로 돌아오며, 실행 전에 설정창이 열려 있었다면 다시 표시합니다.
 
-- Win+B 등 전역 단축키 기능과 키 입력 감지·등록은 제거했습니다.
+- **Win+B**로도 켜고 끌 수 있습니다.
 - 화면 전체는 검게 표시하며, 포인터는 검은 배경에서 숨기고 해제 버튼 위에서 표시합니다. 마우스 이동이나 검은 배경 클릭으로는 해제되지 않습니다. 비상시 Alt+F4로도 해제할 수 있습니다.
 - 검은 화면 동안 절전 방지·화면 유지·유휴 마우스 입력을 임시 활성화합니다. **기존 대기 시간**(기본 2분)을 유지하며, 해제하면 원래 기능 선택으로 돌아갑니다.
 - 누르고 있는 키·버튼, 최근 사용자 입력, 잠금·보안 데스크톱 및 모의 입력 제한은 기존처럼 확인합니다. 업데이트 연장은 기존 ON/OFF 및 전체 일시정지 설정을 따릅니다.
 - 디스플레이 전원 끄기·잠금·로그아웃을 요청하지 않습니다. LCD 백라이트는 계속 켜져 있으며 회사의 강제 잠금 정책은 그대로 적용됩니다.
 - 모니터 배치 변경 시 검은 창과 해제 버튼을 다시 배치합니다. 잠금·세션 연결 해제·보안 데스크톱·절전 진입·종료 시 검은 창을 정리합니다.
 - 설정창 크기는 206×133 DLU입니다. 해제 버튼은 96 DPI 기준 56×24px이며 DPI에 따라 배율을 적용합니다.
-- 실제 Windows의 렌더링·버튼 조작·혼합 DPI 모니터 동작은 이 환경에서 검증하지 못했습니다.
+- 사용자가 버튼과 Win+B 동작을 확인했습니다. 개발 환경에서는 실제 Windows UI·혼합 DPI 모니터 동작을 직접 검증하지 못했습니다.
 
 ## 기본 사용법
 
@@ -82,7 +105,7 @@
 - 설정창은 206×133 DLU입니다. 픽셀 크기는 DPI와 글꼴에 따라 달라집니다.
 - Windows 기본 DLL을 사용하며 별도 .NET/Python 설치가 필요 없습니다.
 - 6개 EXE의 엄격한 컴파일, 언어 문자열/자리표시자, 시작 등록 모의 검사, 업데이트 정책 및 기간 경계 검사를 수행합니다. 실제 결과는 `VERIFICATION.json`을 참고하세요.
-- 실제 Windows UI 표시, 로그인 자동 실행, 회사 PC의 업데이트 동작은 이 환경에서 검증하지 못했습니다.
+- 사용자 PC에서 Win+B 동작 확인(2026-09-16). 개발 환경의 직접 Windows 실행, 로그인 자동 실행 및 회사별 업데이트 동작 검증은 수행하지 않았습니다.
 
 ## 소스 및 빌드
 
@@ -93,6 +116,7 @@ sh build.sh
 python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
+python3 src/test-win-b-hook.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
@@ -111,3 +135,6 @@ cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 - [업데이트 일시중지와 상태값](https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb#pause-quality-updates)
 
 라이선스: [MIT](LICENSE.txt)
+
+- [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
+- [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)
