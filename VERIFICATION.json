@@ -116,5 +116,17 @@
       ],
       "resource_leaves_checked": 12
     }
+  ],
+  "native_windows_tested_scope": "Direct testing in the build/development environment; user field reports are recorded separately.",
+  "user_field_reports": [
+    {
+      "date": "2026-09-16",
+      "feature": "Win+B black-screen toggle",
+      "result": "User reported working and requested merge to main.",
+      "version": "1.3.3-winb1",
+      "os_build": null,
+      "architecture": null,
+      "scope": "User confirmation; not an exhaustive Windows 10/11, architecture or display configuration test."
+    }
   ]
 }

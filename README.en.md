@@ -1,26 +1,27 @@
 # Awake Mini 1.3.3-winb1
 
-## Win+B experiment branch
+## Toggle black screen with Win+B
 
-**1.3.3-winb1** lives on `experiment/win-b-hook`, separate from stable main.
+While the app is running in the tray, press **Windows key + B** to cover all monitors in black. **Press the same shortcut again to restore** the screen. Both left and right Windows keys are supported.
 
-- Hold either Windows key and press **B** to toggle blackout. Holding B toggles once; release B and press it again to toggle again.
-- A dedicated-thread `WH_KEYBOARD_LL` hook consumes B down, repeats and up. Unlike the earlier Raw Input observer, this implementation suppresses delivery of the chord to the Windows Win+B action.
-- Windows key events and other shortcuts pass through. Ctrl/Alt/Shift+B variants are not captured. A brief injected Ctrl down/up masks the Start menu when Win is released. No DLL injection, driver, or changes to another process are used.
-- The tray menu shows **hook installed / detected count / mask failure count**, or an error code. **Reconnect Win+B hook** reinstalls it. Detected counts queued toggle requests, not verified screen transitions.
-- Installed records successful registration; it cannot detect Windows silently removing a timed-out hook. Reconnect if detection stops, with all keys released.
-- Existing settings/tray **Black screen** controls and the small on-screen **Restore** button remain. Blackout keeps power requests and idle mouse input active at the existing delay.
-- Lock screens and secure desktops are excluded. Other hooks, privilege differences and remote sessions can limit interception or the Ctrl mask input.
-- **Real Windows interception and Start-menu masking have not been tested.** Validation here uses mocked Win32 input/lifecycle tests and x86/x64 cross-compilation.
+| Control | Action |
+|---|---|
+| Win+B | Toggle black screen on / off |
+| Black screen in settings or right-click tray → Black screen | Toggle black screen |
+| Small Restore button at the bottom-right of the black screen | Return to the original screen |
 
-### Test on your PC
+- Holding B toggles once. Release B and press it again to toggle again.
+- While the app runs, black screen replaces the normal Windows Win+B notification-area focus action. Exiting the app restores the default action.
+- During blackout, **keep-awake, keep-display-on and mouse input at the existing idle delay** stay enabled. Restoring returns to the original feature choices. No lock or sign-out is requested.
+- The tray menu shows **hook installation status, detected count and mask failure count**. If the shortcut stops responding, release all keys and choose **Reconnect Win+B hook**.
 
-1. Exit the older Awake Mini from its tray menu, then run the experiment. The singleton prevents running both.
-2. Check hook status in the tray menu. Press Win+B to enter blackout and the same chord to restore.
-3. Test held B, each key release order and the right Windows key. Check that neither Start nor tray focus appears as a side effect.
-4. Check Win alone, Win+E and ordinary B typing. If needed, click **Restore** and exit the app.
-5. You can leave startup registration unchanged while testing. Exit the experiment and run the stable EXE to return to stable.
+On 2026-09-16, the user confirmed Win+B working on their PC and approved promotion to main. The tested executables are preserved, so the version and filenames remain **1.3.3-winb1**. The exact OS build and executable architecture were not separately recorded.
 
+### Shortcut implementation notes
+
+A dedicated-thread `WH_KEYBOARD_LL` hook consumes B down, repeats and up. Windows key events and other shortcuts pass through; Ctrl/Alt/Shift+B variants are not captured. A brief injected Ctrl down/up masks the Start menu when Win is released. No DLL injection or driver is used.
+
+Installed records successful registration; detected counts toggle requests. Silent Windows hook removal after timeout cannot be directly detected. Lock screens and secure desktops are excluded. Other hooks, privilege differences and remote sessions need separate validation.
 
 A small Windows tray utility providing keep-awake requests, display keep-on, idle mouse input, experimental update pause renewal, and launch at sign-in. No installer or additional runtime is required.
 
@@ -60,16 +61,16 @@ The automatic build uses Korean when the current user's Windows **display langua
 
 ## Black screen
 
-Use **Black screen** in settings or **right-click the tray → Black screen**. All monitors are covered in black and the settings window is hidden. Only a small **Restore** button appears at the bottom-right of the primary monitor. Click **Restore** to return. Settings reappear only if they were visible before entering blackout.
+Use **Win+B**, **Black screen** in settings, or **right-click the tray → Black screen**. All monitors are covered in black and the settings window is hidden. Only a small **Restore** button appears at the bottom-right of the primary monitor. Click **Restore** to return. Settings reappear only if they were visible before entering blackout.
 
-- The experimental Win+B hook above is also available.
+- **Win+B** also toggles black screen on and off.
 - The pointer is hidden over the black background and visible over Restore. Mouse movement or background clicks do not dismiss blackout. Alt+F4 remains an emergency exit.
 - Keep-system-awake, keep-display-on and idle mouse input are temporarily enabled using the **existing idle delay** (default 2 minutes). Exiting restores the original feature choices.
 - Held keys/buttons, recent input, locked/secure desktops and synthetic-input restrictions retain their existing behavior. Update renewal follows its existing ON/OFF and Pause all settings.
 - No display-power-off, lock or sign-out request is made. LCD backlights stay on; organization-enforced lock policies still apply.
 - Monitor changes reposition the cover and Restore button. Lock, session disconnect, secure desktop, suspend and exit remove the cover.
 - Settings remain 206×133 DLU. Restore is 56×24px at 96 DPI and scales with DPI.
-- Native Windows rendering, button interaction and mixed-DPI monitor behavior have not been tested in this environment.
+- The user confirmed button and Win+B operation. Native Windows UI and mixed-DPI behavior have not been directly tested in the development environment.
 
 ## Run at sign-in
 
@@ -104,7 +105,7 @@ The app does not change update policies, services, scheduled tasks, or ACLs. Sta
 - Settings dialog: 206×133 DLU. Pixel dimensions depend on DPI and font metrics.
 - Uses Windows system DLLs; no separate .NET or Python installation is needed to run the app.
 - Validation covers strict compilation of all six EXEs, language strings and placeholders, mocked startup registration, and update policy and date boundary checks. See `VERIFICATION.json` for the actual recorded checks.
-- Native Windows blackout rendering, hotkey behavior, mixed-DPI displays, automatic launch after sign-in, and organization-specific update behavior have not been tested in this environment.
+- User-reported Win+B operation confirmed on 2026-09-16. Direct native Windows execution in the development environment, mixed-DPI behavior, launch after sign-in and organization-specific update behavior remain unverified.
 
 ## Source and build
 
