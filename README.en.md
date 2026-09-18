@@ -1,4 +1,36 @@
-# Awake Mini 1.3.3-winb1
+# Awake Mini 1.4.0-state1
+
+## Fullscreen and media state experiment
+
+**1.4.0-state1** is on `experiment/presentation-media-state`, separate from main's confirmed Win+B build. Run one portable EXE. Both test features start **OFF** on every launch.
+
+Open **State tests** in settings or **right-click tray → State test settings**. Each checkbox applies **immediately** and operates independently. Minimizing the test dialog leaves enabled features running.
+
+| Test | Actual action | Observable status |
+|---|---|---|
+| Fullscreen notification | Shows a separate fullscreen window on one monitor and calls `ITaskbarList2::MarkFullscreenWindow(TRUE)` | ON/error code and the QUNS value from `SHQueryUserNotificationState` |
+| Media playing status | Registers a Video/Playing SMTC session for this app; no actual video or audio playback | Read-back `Enabled=1 / Playing=3`, or an error code |
+
+**Fullscreen notification does not force Windows global Presentation Settings on.** The documented MarkFullscreenWindow effect is shell treatment of the active window. Inspect QUNS to see whether Windows reports Busy or Presentation; unchanged values are displayed as returned.
+
+**Media state registration differs from real video/audio stream playback.** Reading this app's SMTC properties does not prove visibility in another program's session list or recognition by SSO. If Windows shows the media card, its title is 'Awake Mini - Media status test (no video/audio)'. No playback file or transport-button handler is attached.
+
+### Comparison procedure
+
+1. Exit the older Awake Mini and launch this EXE. The same singleton prevents concurrent instances.
+2. To isolate effects, individually turn OFF and Apply the existing **keep-awake, display keep-on and screen-saver/mouse features**, and exit blackout. Leave **Pause all OFF** so experiments can run. Existing selections are preserved; the experiments do not turn them off for you.
+3. Record a baseline with both experiments OFF.
+4. Enable fullscreen only, observe, then exit using **Restore**, **Esc** or **Alt+F4**.
+5. Enable media only, observe under the same conditions, then disable it.
+6. For both together, enable media first, then fullscreen. Exiting fullscreen leaves media enabled.
+7. Compare actual SSO client/site login status after the same idle duration. Awake Mini does not read SSO login state or report SSO success.
+
+The fullscreen experiment is separate from blackout and adds no power requests or mouse input. **Existing Win+B blackout enables power/mouse requests, so avoid mixing it into isolated tests.** Entering fullscreen exits existing blackout; Win+B exits the fullscreen test and switches to normal blackout.
+
+Pause all, lock/session disconnect, secure-desktop detection, suspend and app exit clear both test features. They do not automatically resume. Media teardown sets Closed, disables SMTC, clears metadata and releases objects. Fullscreen teardown removes the shell marking and hides the window.
+
+No SSO process, network traffic, session token or security policy is accessed. **SSO effects and native Windows state visibility remain unverified.** Validation covers x86/x64 builds, ABI offsets, mocked Win32/WinRT lifecycle and existing Win+B/blackout regressions.
+
 
 ## Toggle black screen with Win+B
 
@@ -15,7 +47,7 @@ While the app is running in the tray, press **Windows key + B** to cover all mon
 - During blackout, **keep-awake, keep-display-on and mouse input at the existing idle delay** stay enabled. Restoring returns to the original feature choices. No lock or sign-out is requested.
 - The tray menu shows **hook installation status, detected count and mask failure count**. If the shortcut stops responding, release all keys and choose **Reconnect Win+B hook**.
 
-On 2026-09-16, the user confirmed Win+B working on their PC and approved promotion to main. The tested executables are preserved, so the version and filenames remain **1.3.3-winb1**. The exact OS build and executable architecture were not separately recorded.
+On 2026-09-16, the user confirmed Win+B working on their PC and approved promotion to main. That report applies to the earlier **1.3.3-winb1** version, not these new state tests. The exact OS build and executable architecture were not separately recorded.
 
 ### Shortcut implementation notes
 
@@ -31,17 +63,17 @@ A small Windows tray utility providing keep-awake requests, display keep-on, idl
 
 | File | Language | Target |
 |---|---|---|
-| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | English | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x64-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x64-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x64-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-en.exe?raw=true) | English | 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x86-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x86-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.4.0-state1-x86-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
 
 The automatic build uses Korean when the current user's Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart the app after changing the display language. Fixed-language builds are separate executables and need no command-line options. Run only one executable at a time.
 
 
-**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
+**Complete download:** [Six executables, source, and both READMEs](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-source.zip?raw=true)
 
 ## Quick start
 
@@ -117,6 +149,7 @@ python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
 python3 src/test-win-b-hook.py
+python3 src/test-state-test.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
@@ -138,3 +171,7 @@ License: [MIT](LICENSE.txt)
 
 - [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
 - [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)
+
+- [MarkFullscreenWindow](https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist2-markfullscreenwindow)
+- [Desktop SMTC GetForWindow](https://learn.microsoft.com/en-us/windows/win32/api/systemmediatransportcontrolsinterop/nf-systemmediatransportcontrolsinterop-isystemmediatransportcontrolsinterop-getforwindow)
+- [SystemMediaTransportControls](https://learn.microsoft.com/en-us/uwp/api/windows.media.systemmediatransportcontrols)

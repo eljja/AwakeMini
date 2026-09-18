@@ -1,132 +1,149 @@
 {
-  "version": "1.3.3-winb1",
+  "version": "1.4.0-state1",
   "native_windows_tested": false,
-  "blackout_native_tested": false,
-  "logon_startup_verified": false,
-  "update_acceptance_verified": false,
+  "state_test_native_tested": false,
+  "sso_retention_verified": false,
   "dialog_dlu": [
     206,
     133
   ],
+  "state_test_dialog_dlu": [
+    206,
+    127
+  ],
   "checks": [
-    "six x86/x64 auto/ko/en strict-warning builds with no diagnostics",
-    "PE resources walked and bounds checked; version, manifest, GUI subsystem, architecture and system DLL imports checked",
-    "73 translations: all UI labels covered and format arguments match",
-    "actual blackout lifecycle with mocked Windows: release control required, primary-monitor button placement, negative monitor coordinates, 96/192 DPI, settings hidden/restored only when previously visible, tray entry, placement/focus failure handling, session cleanup and idempotent exit",
-    "actual power/mouse functions with mocked Windows: existing idle interval, held-key/session/restricted-input gates, temporary enablement and original behavior restored",
-    "actual dedicated-thread WH_KEYBOARD_LL module under mocked Win32 with address/undefined sanitizers (leak detection disabled for environment): B suppression and repeats, both Win sides, release order, ordinary chords, injected events, queue and mask failures, state reset, hook/event/thread failures and timeout-safe cleanup"
+    "Six strict-warning x86/x64 auto/ko/en builds, no diagnostics; C ABI vtable offset assertions compiled for both architectures.",
+    "PE architecture, GUI subsystem, resource bounds, version, manifest and both dialog dimensions validated; system DLL imports checked.",
+    "84 translations: Korean UI literal coverage and printf arguments checked.",
+    "Actual state-test lifecycle under mock Win32/WinRT with address/undefined sanitizers: 13 media setup failure stages, readback mismatch, independent toggles, fullscreen rollback, pause/session cleanup, no auto-resume. Leak detection disabled for the container environment.",
+    "Existing actual blackout lifecycle, power and mouse behavior regression tests passed under mock Win32.",
+    "Existing actual Win+B suppression, repeat/modifier handling, hook startup/cleanup tests passed under mock Win32."
   ],
   "historical_unchanged_checks": [
-    "v1.2.0 startup registration and update policy/date regression tests; implementation unchanged"
+    "Prior startup registration and update policy/date tests; implementations unchanged."
+  ],
+  "user_field_reports": [
+    {
+      "version": "1.3.3-winb1",
+      "date": "2026-09-16",
+      "feature": "Win+B",
+      "result": "User confirmed the previous main build; does not validate these new experiments."
+    }
   ],
   "executables": [
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x86-auto.exe",
-      "bytes": 74240,
-      "sha256": "f8ba80a09d53c78ca62a3ce91b08354f4a0afee5117ced35c9280434f7a8e233",
+      "filename": "AwakeMini-v1.4.0-state1-x86-auto.exe",
+      "bytes": 83456,
+      "sha256": "a1293cdeaaa4852fe428e471cfe340508b1efda75e371fa78a5db6d16673790d",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
+      "resource_leaves_checked": 13
     },
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x86-ko.exe",
-      "bytes": 74240,
-      "sha256": "903a7b7d6d19783f87be27382635fa71b5d61f7a92040a5470be682291ecfe6b",
+      "filename": "AwakeMini-v1.4.0-state1-x86-ko.exe",
+      "bytes": 83456,
+      "sha256": "5645c15e4ac8a5c8f20cc4af91fd8465fa6329e42ddde993f8facd4dc39c28d8",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
+      "resource_leaves_checked": 13
     },
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x86-en.exe",
-      "bytes": 74240,
-      "sha256": "82311af2582170b40b26dea917e57331cccd53b43db140177859567197ecb14a",
+      "filename": "AwakeMini-v1.4.0-state1-x86-en.exe",
+      "bytes": 83456,
+      "sha256": "ea9542c2dd8bf401212b6642bc0ad59dedf12d5034ca2fe1eba2e35aca0d019b",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
+      "resource_leaves_checked": 13
     },
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x64-auto.exe",
-      "bytes": 71680,
-      "sha256": "2c20822253d9eec476828a8efc4e7d340047391fc3f4fdd716273d4b0d358169",
+      "filename": "AwakeMini-v1.4.0-state1-x64-auto.exe",
+      "bytes": 80896,
+      "sha256": "7d16f766350c0d1bcdbfd23b7ec72ae100c0898512560b23d827831601fb0009",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
+      "resource_leaves_checked": 13
     },
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x64-ko.exe",
-      "bytes": 71680,
-      "sha256": "6c0bd9189936f5172fe8fadc45322b7553057e87fc4e8f51f2bd328f6be1f48e",
+      "filename": "AwakeMini-v1.4.0-state1-x64-ko.exe",
+      "bytes": 80896,
+      "sha256": "7f1b9f4be381b94eb85a82795b59e18206320e4b42d34b881a94757c4cc44fb6",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
+      "resource_leaves_checked": 13
     },
     {
-      "filename": "AwakeMini-v1.3.3-winb1-x64-en.exe",
-      "bytes": 71680,
-      "sha256": "90e15dbbf3a326a505119cc5a080322ee4caf96ae0548dd9c9d0f61abe973c80",
+      "filename": "AwakeMini-v1.4.0-state1-x64-en.exe",
+      "bytes": 80896,
+      "sha256": "f435b69a6c0f5fc2bf2a6b1b5ed9ffcadcf7783ef6932899aac6519f619a8455",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
         "KERNEL32.dll",
         "ktmw32.dll",
         "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
         "SHELL32.dll",
         "USER32.dll",
         "WTSAPI32.dll"
       ],
-      "resource_leaves_checked": 12
-    }
-  ],
-  "native_windows_tested_scope": "Direct testing in the build/development environment; user field reports are recorded separately.",
-  "user_field_reports": [
-    {
-      "date": "2026-09-16",
-      "feature": "Win+B black-screen toggle",
-      "result": "User reported working and requested merge to main.",
-      "version": "1.3.3-winb1",
-      "os_build": null,
-      "architecture": null,
-      "scope": "User confirmation; not an exhaustive Windows 10/11, architecture or display configuration test."
+      "resource_leaves_checked": 13
     }
   ]
 }

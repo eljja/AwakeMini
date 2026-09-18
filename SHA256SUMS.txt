@@ -1,6 +1,6 @@
-f8ba80a09d53c78ca62a3ce91b08354f4a0afee5117ced35c9280434f7a8e233  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe
-903a7b7d6d19783f87be27382635fa71b5d61f7a92040a5470be682291ecfe6b  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe
-82311af2582170b40b26dea917e57331cccd53b43db140177859567197ecb14a  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe
-2c20822253d9eec476828a8efc4e7d340047391fc3f4fdd716273d4b0d358169  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe
-6c0bd9189936f5172fe8fadc45322b7553057e87fc4e8f51f2bd328f6be1f48e  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe
-90e15dbbf3a326a505119cc5a080322ee4caf96ae0548dd9c9d0f61abe973c80  downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe
+a1293cdeaaa4852fe428e471cfe340508b1efda75e371fa78a5db6d16673790d  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-auto.exe
+5645c15e4ac8a5c8f20cc4af91fd8465fa6329e42ddde993f8facd4dc39c28d8  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-ko.exe
+ea9542c2dd8bf401212b6642bc0ad59dedf12d5034ca2fe1eba2e35aca0d019b  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-en.exe
+7d16f766350c0d1bcdbfd23b7ec72ae100c0898512560b23d827831601fb0009  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-auto.exe
+7f1b9f4be381b94eb85a82795b59e18206320e4b42d34b881a94757c4cc44fb6  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-ko.exe
+f435b69a6c0f5fc2bf2a6b1b5ed9ffcadcf7783ef6932899aac6519f619a8455  downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-en.exe

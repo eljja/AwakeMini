@@ -70,7 +70,7 @@ static const struct { const WCHAR *ko; const WCHAR *en; } strings[] = {
     {L"Windows 시작 시 실행", L"Run at sign-in"},
     {L"프로그램 종료", L"Exit program"},
     {L"최소화", L"Minimize"},
-    {L"Awake Mini 1.3.3-winb1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어).", L"Awake Mini 1.3.3-winb1\n\nDouble-click tray: settings / Right-click: menu\nKeep awake · Keep display on · Idle mouse input\nBlack screen button / tray menu: start · Restore button: return\nBlack screen enables keep-awake, display-on and timed mouse input\n\nRun at sign-in uses standard user privileges.\nUpdate pause renewal requires administrator privileges.\nAfter moving the EXE, enable startup and Apply to refresh its path.\n\nUpdate pause renewal is experimental.\nEvery 24 hours: now + 7 days, capped at 35 days from pause start.\nA shorter configured pause limit takes precedence.\nOFF / Pause all / Exit leaves the existing expiry unchanged.\nCheck Windows Settings to confirm the actual pause state.\n\nLanguage follows the Windows display language (Korean / English)."},
+    {L"Awake Mini 1.4.0-state1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어).", L"Awake Mini 1.4.0-state1\n\nDouble-click tray: settings / Right-click: menu\nKeep awake · Keep display on · Idle mouse input\nBlack screen button / tray menu: start · Restore button: return\nBlack screen enables keep-awake, display-on and timed mouse input\n\nRun at sign-in uses standard user privileges.\nUpdate pause renewal requires administrator privileges.\nAfter moving the EXE, enable startup and Apply to refresh its path.\n\nUpdate pause renewal is experimental.\nEvery 24 hours: now + 7 days, capped at 35 days from pause start.\nA shorter configured pause limit takes precedence.\nOFF / Pause all / Exit leaves the existing expiry unchanged.\nCheck Windows Settings to confirm the actual pause state.\n\nLanguage follows the Windows display language (Korean / English)."},
     {L"검은 화면", L"Black screen"},
     {L"검은 화면 사용 불가 · 창 생성 실패", L"Black screen unavailable · Window creation failed"},
     {L"검은화면", L"Black screen"},
@@ -80,6 +80,17 @@ static const struct { const WCHAR *ko; const WCHAR *en; } strings[] = {
     {L"Win+B: 훅 설치됨 · 감지 %lu · 보조 입력 실패 %lu", L"Win+B: hook installed · detected %lu · mask failures %lu"},
     {L"Win+B: 훅 미설치 · 버튼 사용 가능", L"Win+B: hook not installed · buttons available"},
     {L"Win+B 훅 다시 연결", L"Reconnect Win+B hook"},
+    {L"상태 시험 설정", L"State test settings"},
+    {L"전체화면 알림 (시험)", L"Fullscreen notification (test)"},
+    {L"미디어 재생 상태 (시험)", L"Media playing status (test)"},
+    {L"상태 시험", L"State tests"},
+    {L"Awake Mini 상태 시험", L"Awake Mini state tests"},
+    {L"상태만 시험 · SSO 유지 여부는 별도 확인", L"Status test only; check SSO separately"},
+    {L"Awake Mini · 미디어 상태 시험 (영상·소리 없음)", L"Awake Mini - Media status test (no video/audio)"},
+    {L"전체화면 오류: 0x%08lX", L"Fullscreen error: 0x%08lX"},
+    {L"전체화면 알림 ON", L"Fullscreen notification ON"},
+    {L"미디어 오류: 0x%08lX", L"Media error: 0x%08lX"},
+    {L"전체화면 시험 · Esc 또는 해제로 종료", L"Fullscreen test - Esc or Restore to exit"},
 };
 void am_language_init(void)
 {

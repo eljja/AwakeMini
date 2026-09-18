@@ -1,4 +1,36 @@
-# Awake Mini 1.3.3-winb1
+# Awake Mini 1.4.0-state1
+
+## 전체화면·미디어 상태 시험 브랜치
+
+**1.4.0-state1**은 `experiment/presentation-media-state`의 시험판입니다. main의 검증된 Win+B 버전과 분리되어 있습니다. 설치 없이 한 EXE로 실행하며 두 시험 기능은 매번 **OFF**로 시작합니다.
+
+설정창의 **상태 시험** 버튼 또는 **트레이 우클릭 → 상태 시험 설정**을 누르세요. 두 체크 항목은 **즉시 적용**되며 각각 독립적으로 켜고 끌 수 있습니다. 시험창을 최소화해도 켜 둔 기능은 유지됩니다.
+
+| 항목 | 실제 수행 동작 | 확인할 상태 |
+|---|---|---|
+| 전체화면 알림 (시험) | 한 모니터에 별도의 전체화면 창을 표시하고 `ITaskbarList2::MarkFullscreenWindow(TRUE)`로 Windows 셸에 알림 | ON/오류 코드, `SHQueryUserNotificationState`의 QUNS 값 |
+| 미디어 재생 상태 (시험) | 현재 앱의 SMTC 세션에 Video 유형과 Playing 상태 등록. 실제 영상·소리 재생 없음 | 다시 읽은 `Enabled=1 / Playing=3`, 또는 오류 코드 |
+
+**전체화면 상태는 Windows의 전역 ‘발표 설정’을 강제로 켜는 기능이 아닙니다.** MarkFullscreenWindow의 문서상 효과는 활성 창을 전체화면으로 취급하는 셸 동작입니다. QUNS가 Busy 또는 Presentation으로 바뀔지는 실제 조회값을 확인해야 합니다. 조회값이 그대로여도 이를 성공으로 꾸며 표시하지 않습니다.
+
+**미디어 상태 등록은 영상·오디오 스트림을 실제 재생하는 것과 다릅니다.** 앱의 SMTC 속성 읽기 성공은 다른 프로그램의 미디어 세션 목록 노출이나 SSO의 인식을 보장하지 않습니다. Windows 미디어 UI가 표시한다면 제목은 ‘Awake Mini · 미디어 상태 시험 (영상·소리 없음)’입니다. 버튼 입력이나 재생 파일은 연결하지 않았습니다.
+
+### 비교 시험 방법
+
+1. 기존 Awake Mini를 종료하고 이 EXE를 실행합니다. 동일한 단일 실행 잠금을 사용합니다.
+2. 원인을 분리하려면 기존 **절전 방지·화면 켜기 유지·화면보호기 방지**를 각각 OFF로 적용하고 검은화면도 해제하세요. **전체 일시정지는 OFF**여야 시험 기능을 켤 수 있습니다. 기존 기능은 사용자 설정을 그대로 따르므로 자동으로 꺼 주지 않습니다.
+3. 두 시험 항목을 모두 OFF로 둔 상태를 기준으로 확인합니다.
+4. 전체화면만 ON → 결과 확인 → 해제. 전체화면 창의 작은 **해제** 버튼, **Esc** 또는 **Alt+F4**로 종료합니다.
+5. 미디어만 ON → 같은 조건으로 결과 확인 → OFF.
+6. 둘 다 비교하려면 미디어를 먼저 ON으로 한 뒤 전체화면을 켭니다. 전체화면 해제는 미디어를 끄지 않습니다.
+7. 같은 대기 시간 동안 실제 SSO 클라이언트/사이트의 로그인 상태를 비교합니다. 이 프로그램은 SSO 로그인 상태를 읽거나 ‘유지 성공’으로 판정하지 않습니다.
+
+전체화면 시험 창은 기존 검은화면과 별개입니다. 시험 창 자체는 전원 유지 API나 마우스 입력을 추가하지 않습니다. **Win+B의 기존 검은화면 기능은 전원·마우스 기능을 켜므로 비교 시험 중에는 혼용하지 마세요.** 전체화면 시험을 켜면 기존 검은화면을 해제하며, Win+B를 누르면 시험 전체화면을 닫고 기존 검은화면으로 전환합니다.
+
+전체 일시정지, 잠금/세션 연결 해제, 보안 데스크톱 감지, 절전 및 프로그램 종료 시 두 시험 기능을 해제합니다. 정상 세션으로 돌아와도 자동 재활성화하지 않습니다. 미디어 해제는 Closed·IsEnabled=false·메타데이터 정리·객체 해제를 수행합니다. 전체화면은 셸 표시를 해제하고 창을 숨깁니다.
+
+SSO 프로그램·통신·세션 토큰·보안 정책에는 접근하지 않습니다. **SSO 유지 효과 및 실제 Windows 상태 노출은 아직 검증하지 못했습니다.** x86/x64 빌드, ABI 위치, 모의 Win32/WinRT 생명주기 및 기존 Win+B·검은화면 회귀 검사를 수행했습니다.
+
 
 ## Win+B로 검은화면 켜기·끄기
 
@@ -15,7 +47,7 @@
 - 검은화면에서도 **절전 방지·화면 켜기 유지·기존 대기 시간의 마우스 입력**이 활성화됩니다. 해제하면 원래 기능 선택으로 복귀합니다. 화면 잠금이나 로그아웃을 요청하지 않습니다.
 - 트레이 우클릭에서 **훅 설치 상태·감지 횟수·보조 입력 실패 횟수**를 확인할 수 있습니다. 반응이 없으면 키를 모두 놓고 **Win+B 훅 다시 연결**을 선택하세요.
 
-2026-09-16 사용자가 실제 PC에서 Win+B 동작을 확인하여 main에 반영했습니다. 확인한 실행 파일을 그대로 제공하므로 버전·파일명은 **1.3.3-winb1**을 유지합니다. OS 빌드와 실행 아키텍처 등 세부 환경은 별도로 수집하지 않았습니다.
+2026-09-16 사용자가 실제 PC에서 Win+B 동작을 확인하여 main에 반영했습니다. 이 확인은 이전 **1.3.3-winb1** 버전에 대한 것이며 이번 상태 시험 기능에는 적용되지 않습니다. OS 빌드와 실행 아키텍처 등 세부 환경은 별도로 수집하지 않았습니다.
 
 ### 단축키 동작 참고
 
@@ -31,17 +63,17 @@
 
 | 파일 | 언어 | 대상 |
 |---|---|---|
-| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x64-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x64-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x64-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x86-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x86-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.4.0-state1-x86-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
 
 자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
 
 
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
+**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-source.zip?raw=true)
 
 ## 검은 화면
 
@@ -117,6 +149,7 @@ python3 src/test-policy-gate.py
 python3 src/test-startup.py
 python3 src/test-blackout.py
 python3 src/test-win-b-hook.py
+python3 src/test-state-test.py
 cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 ./test-update-plan
 ```
@@ -138,3 +171,7 @@ cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
 
 - [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
 - [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)
+
+- [MarkFullscreenWindow](https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist2-markfullscreenwindow)
+- [Desktop SMTC GetForWindow](https://learn.microsoft.com/en-us/windows/win32/api/systemmediatransportcontrolsinterop/nf-systemmediatransportcontrolsinterop-isystemmediatransportcontrolsinterop-getforwindow)
+- [SystemMediaTransportControls](https://learn.microsoft.com/en-us/uwp/api/windows.media.systemmediatransportcontrols)

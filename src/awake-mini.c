@@ -11,6 +11,7 @@
 #include "startup.h"
 #include "blackout.h"
 #include "win-b-hook.h"
+#include "state-test.h"
 
 #define APP L"Awake Mini"
 #define CLASS L"AwakeMini.Window.v1"
@@ -26,6 +27,9 @@
 #define ID_UPDATE_SETTINGS 108
 #define ID_BLACKOUT 109
 #define ID_REHOOK 110
+#define ID_STATE_TEST 111
+#define ID_FULL_TEST 112
+#define ID_MEDIA_TEST 113
 #define ID_INTERVAL 200
 
 static const DWORD intervals[] = {60, 120, 300, 600};
@@ -184,6 +188,9 @@ static void show_menu(void)
     inspect_saver();
     if (!menu || !timing) { if (menu) DestroyMenu(menu); if (timing) DestroyMenu(timing); return; }
     AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, paused ? AM_TEXT(L"Awake Mini · 일시정지") : AM_TEXT(L"Awake Mini · 트레이 모드"));
+    AppendMenuW(menu, MF_STRING, ID_STATE_TEST, AM_TEXT(L"상태 시험 설정"));
+    AppendMenuW(menu, MF_STRING | (am_test_full_active() ? MF_CHECKED : 0), ID_FULL_TEST, AM_TEXT(L"전체화면 알림 (시험)"));
+    AppendMenuW(menu, MF_STRING | (am_test_media_active() ? MF_CHECKED : 0), ID_MEDIA_TEST, AM_TEXT(L"미디어 재생 상태 (시험)"));
     AppendMenuW(menu, MF_STRING, ID_SETTINGS, AM_TEXT(L"설정 열기 (더블클릭)"));
     AppendMenuW(menu, MF_STRING | (blackout_ready ? 0 : MF_GRAYED) |
         (am_blackout_active() ? MF_CHECKED : 0), ID_BLACKOUT,
@@ -256,7 +263,10 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             (HIWORD(wp) == BN_CLICKED || HIWORD(wp) == EN_CHANGE))
             SetDlgItemTextW(hwnd, IDOK, AM_TEXT(L"적용"));
         switch (LOWORD(wp)) {
+        case 1013:
+            am_test_tick(desktop_available() && !paused); am_test_show(); return TRUE;
         case 1012:
+            am_test_full_stop(FALSE);
             available = desktop_available();
             if (available) am_blackout_toggle(hwnd);
             update_power(); update_tray(); refresh_blackout_button();
@@ -282,6 +292,7 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             mouse_on = IsDlgButtonChecked(hwnd, 1003) == BST_CHECKED;
             update_on = IsDlgButtonChecked(hwnd, 1008) == BST_CHECKED;
             paused = IsDlgButtonChecked(hwnd, 1005) == BST_CHECKED;
+            am_test_tick(desktop_available() && !paused);
             interval_s = minutes * 60;
             last_attempt = GetTickCount(); mouse_status = AM_TEXT(L"대기 중");
             saved = save_settings(); inspect_saver(); update_power();
@@ -329,6 +340,7 @@ static void show_settings(void)
 static void cleanup(void)
 {
     KillTimer(window, 1);
+    am_test_cleanup();
     am_keys_cleanup();
     am_blackout_cleanup();
     SetThreadExecutionState(ES_CONTINUOUS);
@@ -339,21 +351,29 @@ static void cleanup(void)
 static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
     unsigned command;
-    if (taskbar_created && msg == taskbar_created) { tray_added = FALSE; update_tray(); return 0; }
+    if (taskbar_created && msg == taskbar_created) { am_test_shell_changed(); tray_added = FALSE; update_tray(); return 0; }
     switch (msg) {
+    case AM_TEST_FULLSCREEN:
+        am_test_tick(desktop_available() && !paused);
+        if (!am_test_full_active() && !paused && desktop_available()) am_blackout_hide(FALSE);
+        am_test_full_toggle(); update_power(); update_tray(); return 0;
+    case AM_TEST_MEDIA:
+        am_test_tick(desktop_available() && !paused); am_test_media_toggle(); return 0;
     case AM_WIN_B_TOGGLE:
+        am_test_full_stop(FALSE);
         available = desktop_available();
         if (blackout_ready && available) am_blackout_toggle(settings);
         update_power(); update_tray(); return 0;
     case AM_BLACKOUT_CHANGED:
         refresh_blackout_button(); update_power(); update_tray(); return 0;
     case WM_DISPLAYCHANGE:
-        am_blackout_refresh(); return 0;
+        am_test_display_changed(); am_blackout_refresh(); return 0;
     case WM_TIMER: {
         BOOL before = available;
         available = desktop_available();
         if (before != available) am_keys_reset();
         if (!available) am_blackout_hide(FALSE);
+        am_test_tick(available && !paused);
         inspect_saver(); update_power(); try_mouse();
         up_tick(update_on && !paused, FALSE);
         if (settings && IsWindowVisible(settings)) SetDlgItemTextW(settings, 1009, up_status());
@@ -365,11 +385,15 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         return 0;
     case WM_COMMAND:
         command = LOWORD(wp);
+        if (command == ID_STATE_TEST) { am_test_tick(desktop_available() && !paused); am_test_show(); return 0; }
+        if (command == ID_FULL_TEST) { SendMessageW(hwnd, AM_TEST_FULLSCREEN, 0, 0); return 0; }
+        if (command == ID_MEDIA_TEST) { SendMessageW(hwnd, AM_TEST_MEDIA, 0, 0); return 0; }
         if (command == ID_REHOOK) {
             if (blackout_ready) am_keys_start(instance, window);
             return 0;
         }
         if (command == ID_BLACKOUT) {
+            am_test_full_stop(FALSE);
             available = desktop_available();
             if (available) am_blackout_toggle(settings);
             update_power(); update_tray(); return 0;
@@ -379,7 +403,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (command == ID_EXIT) { DestroyWindow(hwnd); return 0; }
         if (command == ID_ABOUT) {
             MessageBoxW(hwnd,
-                AM_TEXT(L"Awake Mini 1.3.3-winb1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
+                AM_TEXT(L"Awake Mini 1.4.0-state1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
                 APP, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
@@ -389,6 +413,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         else if (command == ID_PAUSE) paused = !paused;
         else if (command >= ID_INTERVAL && command < ID_INTERVAL + 4) interval_s = intervals[command - ID_INTERVAL];
         else return 0;
+        am_test_tick(desktop_available() && !paused);
         last_attempt = GetTickCount(); mouse_status = AM_TEXT(L"대기 중");
         save_settings(); update_power(); up_tick(update_on && !paused, TRUE);
         update_tray(); refresh_settings(); return 0;
@@ -398,10 +423,12 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (wp == WTS_SESSION_UNLOCK || wp == WTS_CONSOLE_CONNECT || wp == WTS_REMOTE_CONNECT) locked = FALSE;
         available = desktop_available(); last_attempt = GetTickCount();
         if (!available) am_blackout_hide(FALSE);
+        am_test_tick(available && !paused);
         update_power(); update_tray(); return 0;
     case WM_POWERBROADCAST:
         am_keys_reset();
         if (wp == PBT_APMSUSPEND) {
+            am_test_tick(FALSE);
             am_blackout_hide(FALSE);
             SetThreadExecutionState(ES_CONTINUOUS); applied = 0xffffffffu;
         } else if (wp == PBT_APMRESUMEAUTOMATIC || wp == PBT_APMRESUMESUSPEND) {
@@ -437,9 +464,11 @@ int WINAPI WinMain(HINSTANCE current, HINSTANCE previous, LPSTR arguments, int s
     window = CreateWindowExW(WS_EX_TOOLWINDOW, CLASS, APP, WS_POPUP, 0, 0, 0, 0, NULL, NULL, instance, NULL);
     if (!window) { CloseHandle(mutex); return 3; }
     blackout_ready = am_blackout_init(instance, window);
+    am_test_init(instance, window);
     taskbar_created = RegisterWindowMessageW(L"TaskbarCreated");
     load_settings();
     available = desktop_available();
+    am_test_tick(available && !paused);
     last_attempt = GetTickCount();
     tray.cbSize = sizeof(tray); tray.hWnd = window; tray.uID = 1;
     tray.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP; tray.uCallbackMessage = WM_TRAY;
@@ -454,6 +483,7 @@ int WINAPI WinMain(HINSTANCE current, HINSTANCE previous, LPSTR arguments, int s
     update_power();
     up_tick(update_on && !paused, TRUE);
     while ((result = GetMessageW(&msg, NULL, 0, 0)) > 0) {
+        if (am_test_message(&msg)) continue;
         if (settings && IsWindowVisible(settings) && IsDialogMessageW(settings, &msg)) continue;
         TranslateMessage(&msg); DispatchMessageW(&msg);
     }
