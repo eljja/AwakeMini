@@ -1,5 +1,8 @@
 # Awake Mini 1.3.3-winb1
 
+**Latest prerelease: [1.4.0-state3](https://github.com/eljja/AwakeMini/releases/tag/v1.4.0-state3)** — includes fullscreen flag, media playing state and integrated QUNS display. [Latest Korean/English documentation](https://github.com/eljja/AwakeMini/tree/experiment/presentation-media-state). This main branch retains the confirmed 1.3.3-winb1 build.
+
+
 ## Toggle black screen with Win+B
 
 While the app is running in the tray, press **Windows key + B** to cover all monitors in black. **Press the same shortcut again to restore** the screen. Both left and right Windows keys are supported.

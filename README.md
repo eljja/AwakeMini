@@ -1,5 +1,8 @@
 # Awake Mini 1.3.3-winb1
 
+**최신 시험판: [1.4.0-state3](https://github.com/eljja/AwakeMini/releases/tag/v1.4.0-state3)** — 전체화면 신호·미디어 재생 상태·QUNS를 기본 설정창에 통합했습니다. [최신 한글·영문 설명서](https://github.com/eljja/AwakeMini/tree/experiment/presentation-media-state). main은 동작을 확인한 1.3.3-winb1을 유지합니다.
+
+
 ## Win+B로 검은화면 켜기·끄기
 
 프로그램이 트레이에서 실행 중일 때 **Windows 키 + B**를 누르면 모든 모니터를 검은 화면으로 덮습니다. **같은 키를 다시 누르면 해제**됩니다. 왼쪽·오른쪽 Windows 키를 지원합니다.
