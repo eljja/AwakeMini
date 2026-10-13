@@ -1,177 +1,132 @@
-# Awake Mini 1.4.0-state1
+# Awake Mini 1.4.0-state3
 
-## 전체화면·미디어 상태 시험 브랜치
+설치 없이 실행하는 작은 Windows 트레이 프로그램입니다. 절전 방지, 화면 유지, 유휴 마우스 입력, Win+B 검은화면, 로그인 시 자동 실행을 제공합니다.
 
-**1.4.0-state1**은 `experiment/presentation-media-state`의 시험판입니다. main의 검증된 Win+B 버전과 분리되어 있습니다. 설치 없이 한 EXE로 실행하며 두 시험 기능은 매번 **OFF**로 시작합니다.
+**이 브랜치의 최신 버전: 1.4.0-state3** · [English](README.en.md) · [기존 main 버전](https://github.com/eljja/AwakeMini/tree/main)
 
-설정창의 **상태 시험** 버튼 또는 **트레이 우클릭 → 상태 시험 설정**을 누르세요. 두 체크 항목은 **즉시 적용**되며 각각 독립적으로 켜고 끌 수 있습니다. 시험창을 최소화해도 켜 둔 기능은 유지됩니다.
+## 다운로드
 
-| 항목 | 실제 수행 동작 | 확인할 상태 |
-|---|---|---|
-| 전체화면 알림 (시험) | 한 모니터에 별도의 전체화면 창을 표시하고 `ITaskbarList2::MarkFullscreenWindow(TRUE)`로 Windows 셸에 알림 | ON/오류 코드, `SHQueryUserNotificationState`의 QUNS 값 |
-| 미디어 재생 상태 (시험) | 현재 앱의 SMTC 세션에 Video 유형과 Playing 상태 등록. 실제 영상·소리 재생 없음 | 다시 읽은 `Enabled=1 / Playing=3`, 또는 오류 코드 |
+[GitHub Releases](https://github.com/eljja/AwakeMini/releases)에서 버전별 EXE와 ZIP을 받을 수 있습니다. `state` 버전은 시험판으로 표시합니다.
 
-**전체화면 상태는 Windows의 전역 ‘발표 설정’을 강제로 켜는 기능이 아닙니다.** MarkFullscreenWindow의 문서상 효과는 활성 창을 전체화면으로 취급하는 셸 동작입니다. QUNS가 Busy 또는 Presentation으로 바뀔지는 실제 조회값을 확인해야 합니다. 조회값이 그대로여도 이를 성공으로 꾸며 표시하지 않습니다.
+일반적인 64비트 Windows에서는 **x64 자동 언어판**을 선택하세요. 별도의 .NET·Python 설치가 필요 없습니다. 실행 파일 크기는 약 75~79KiB입니다.
 
-**미디어 상태 등록은 영상·오디오 스트림을 실제 재생하는 것과 다릅니다.** 앱의 SMTC 속성 읽기 성공은 다른 프로그램의 미디어 세션 목록 노출이나 SSO의 인식을 보장하지 않습니다. Windows 미디어 UI가 표시한다면 제목은 ‘Awake Mini · 미디어 상태 시험 (영상·소리 없음)’입니다. 버튼 입력이나 재생 파일은 연결하지 않았습니다.
+| 대상 | 자동 언어 선택 | 한국어 고정 | 영어 고정 |
+|---|---|---|---|
+| 64비트 Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe?raw=true) |
+| 32·64비트 Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe?raw=true) |
 
-### 비교 시험 방법
+[전체 ZIP — EXE 6개·소스·한글/영문 설명서](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip?raw=true)
 
-1. 기존 Awake Mini를 종료하고 이 EXE를 실행합니다. 동일한 단일 실행 잠금을 사용합니다.
-2. 원인을 분리하려면 기존 **절전 방지·화면 켜기 유지·화면보호기 방지**를 각각 OFF로 적용하고 검은화면도 해제하세요. **전체 일시정지는 OFF**여야 시험 기능을 켤 수 있습니다. 기존 기능은 사용자 설정을 그대로 따르므로 자동으로 꺼 주지 않습니다.
-3. 두 시험 항목을 모두 OFF로 둔 상태를 기준으로 확인합니다.
-4. 전체화면만 ON → 결과 확인 → 해제. 전체화면 창의 작은 **해제** 버튼, **Esc** 또는 **Alt+F4**로 종료합니다.
-5. 미디어만 ON → 같은 조건으로 결과 확인 → OFF.
-6. 둘 다 비교하려면 미디어를 먼저 ON으로 한 뒤 전체화면을 켭니다. 전체화면 해제는 미디어를 끄지 않습니다.
-7. 같은 대기 시간 동안 실제 SSO 클라이언트/사이트의 로그인 상태를 비교합니다. 이 프로그램은 SSO 로그인 상태를 읽거나 ‘유지 성공’으로 판정하지 않습니다.
+자동 언어판은 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어를 사용합니다. Windows 버전 번호나 키보드 입력 언어로 선택하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. ARM64 네이티브 파일은 제공하지 않습니다.
 
-전체화면 시험 창은 기존 검은화면과 별개입니다. 시험 창 자체는 전원 유지 API나 마우스 입력을 추가하지 않습니다. **Win+B의 기존 검은화면 기능은 전원·마우스 기능을 켜므로 비교 시험 중에는 혼용하지 마세요.** 전체화면 시험을 켜면 기존 검은화면을 해제하며, Win+B를 누르면 시험 전체화면을 닫고 기존 검은화면으로 전환합니다.
+## 빠른 시작
 
-전체 일시정지, 잠금/세션 연결 해제, 보안 데스크톱 감지, 절전 및 프로그램 종료 시 두 시험 기능을 해제합니다. 정상 세션으로 돌아와도 자동 재활성화하지 않습니다. 미디어 해제는 Closed·IsEnabled=false·메타데이터 정리·객체 해제를 수행합니다. 전체화면은 셸 표시를 해제하고 창을 숨깁니다.
+1. 기존 Awake Mini를 트레이 우클릭 → **종료**로 끝냅니다.
+2. 원하는 EXE를 계속 보관할 폴더에 놓고 실행합니다. 여러 언어/아키텍처 파일 중 하나만 실행하세요.
+3. 트레이 아이콘을 **더블클릭**하면 설정창, **우클릭**하면 메뉴가 열립니다.
+4. 일반 설정은 체크하고 **적용**을 누릅니다. 성공하면 버튼이 **적용 완료**로 바뀝니다.
+5. **최소화** 또는 X는 설정창만 숨깁니다. 프로그램을 끝내려면 **프로그램 종료**를 누릅니다.
 
-SSO 프로그램·통신·세션 토큰·보안 정책에는 접근하지 않습니다. **SSO 유지 효과 및 실제 Windows 상태 노출은 아직 검증하지 못했습니다.** x86/x64 빌드, ABI 위치, 모의 Win32/WinRT 생명주기 및 기존 Win+B·검은화면 회귀 검사를 수행했습니다.
+전체화면 신호와 미디어 재생 상태는 **체크 즉시 적용**되며 적용 버튼을 누르지 않아도 됩니다.
 
+## 최신 변경 사항
 
-## Win+B로 검은화면 켜기·끄기
+- **전체화면 신호**, **미디어 재생 상태**를 **화면 켜기 유지** 옆에 배치했습니다.
+- 바로 아래에 Windows가 실제 반환한 **QUNS 상태와 숫자**를 표시합니다.
+- 별도 상태 시험창과 실제 전체화면 시험 기능을 제거했습니다. 기존 Win+B 검은화면은 사용할 수 있습니다.
+- 설정창 크기는 **250×145 DLU**입니다. 실제 픽셀 크기는 DPI와 글꼴에 따라 달라집니다.
+- 두 상태 기능은 매 실행 시 **OFF**로 시작합니다. 나머지 기능 선택과 대기 시간은 저장합니다. 전체 일시정지는 현재 실행에만 적용됩니다.
 
-프로그램이 트레이에서 실행 중일 때 **Windows 키 + B**를 누르면 모든 모니터를 검은 화면으로 덮습니다. **같은 키를 다시 누르면 해제**됩니다. 왼쪽·오른쪽 Windows 키를 지원합니다.
+## 기능
 
-| 조작 | 동작 |
+| 기능 | 동작 |
 |---|---|
-| Win+B | 검은화면 켜기 / 끄기 |
-| 설정창의 검은화면 버튼 또는 트레이 우클릭 → 검은화면 | 검은화면 전환 |
-| 검은 화면 오른쪽 아래의 작은 해제 버튼 | 원래 화면으로 복귀 |
+| 절전 방지 | 실행 중 무기한 전원 유지 요청 |
+| 화면 켜기 유지 | 절전 방지와 함께 모니터 유지 요청 |
+| 화면보호기 방지 | 지정한 유휴 시간 후 마우스를 조금 움직이고 즉시 원위치로 복귀 |
+| 전체화면 신호 | 작은 기본 설정창에 `MarkFullscreenWindow(TRUE)` 표시만 설정. 크기 변경이나 화면 덮기 없음 |
+| 미디어 재생 상태 | 앱의 SMTC에 Video 유형과 Playing 상태 등록. 실제 영상·소리 재생 없음 |
+| QUNS | `SHQueryUserNotificationState`의 현재 알림 상태 조회 |
+| Windows 시작 시 실행 | 현재 사용자 로그인 후 설정창 없이 트레이 실행 |
+| 업데이트 일시중지 연장 (시험) | 24시간마다 오늘+7일 기한 기록. 실제 상태는 Windows 설정에서 확인 |
 
-- B를 길게 눌러도 한 번만 전환됩니다. 다시 전환하려면 B를 놓았다 누르세요.
-- 실행 중에는 Windows의 기본 Win+B(알림 영역 포커스 이동)를 검은화면 기능으로 사용합니다. 프로그램을 종료하면 기본 동작으로 돌아갑니다.
-- 검은화면에서도 **절전 방지·화면 켜기 유지·기존 대기 시간의 마우스 입력**이 활성화됩니다. 해제하면 원래 기능 선택으로 복귀합니다. 화면 잠금이나 로그아웃을 요청하지 않습니다.
-- 트레이 우클릭에서 **훅 설치 상태·감지 횟수·보조 입력 실패 횟수**를 확인할 수 있습니다. 반응이 없으면 키를 모두 놓고 **Win+B 훅 다시 연결**을 선택하세요.
+마우스 대기 시간은 기본 **2분**, 범위 **1~1440분**입니다. 최근 사용자 입력이 있거나 키·마우스 버튼을 누르고 있으면 이동을 생략합니다. 모의 입력을 제한하는 설정에서는 화면보호기 방지가 작동하지 않을 수 있습니다.
 
-2026-09-16 사용자가 실제 PC에서 Win+B 동작을 확인하여 main에 반영했습니다. 이 확인은 이전 **1.3.3-winb1** 버전에 대한 것이며 이번 상태 시험 기능에는 적용되지 않습니다. OS 빌드와 실행 아키텍처 등 세부 환경은 별도로 수집하지 않았습니다.
+## Win+B 검은화면
 
-### 단축키 동작 참고
+**Windows 키 + B**로 모든 모니터를 검게 덮고, 같은 키를 다시 누르면 해제합니다. 설정창/트레이의 **검은화면** 또는 검은 화면 오른쪽 아래의 작은 **해제** 버튼도 사용할 수 있습니다. B를 길게 누르면 한 번만 전환됩니다.
 
-전용 스레드의 `WH_KEYBOARD_LL` 훅으로 B의 누름·반복·뗌 이벤트를 차단합니다. Windows 키와 다른 단축키는 통과시키며 Ctrl/Alt/Shift를 추가한 B 조합은 가로채지 않습니다. Windows 키를 놓을 때 시작 메뉴가 열리지 않도록 짧은 Ctrl 누름·뗌 입력을 보냅니다. DLL 주입이나 드라이버는 사용하지 않습니다.
+- 검은화면 동안 절전 방지·화면 유지·기존 대기 시간의 마우스 입력을 활성화합니다. 해제하면 원래 기능 선택으로 복귀합니다.
+- 실제 모니터 전원을 끄거나 잠금·로그아웃을 요청하지 않습니다. LCD 백라이트는 켜져 있습니다.
+- 검은 배경에서는 포인터를 숨깁니다. 마우스 이동이나 배경 클릭으로 해제되지 않습니다. 비상시 Alt+F4로 해제할 수 있습니다.
+- 실행 중에는 Windows 기본 Win+B 동작을 검은화면 기능에 사용합니다. 종료하면 기본 동작으로 돌아갑니다.
+- 반응이 없으면 키를 모두 놓고 트레이의 **Win+B 훅 다시 연결**을 선택하세요. 메뉴에서 훅 상태·감지 횟수·보조 입력 실패를 확인할 수 있습니다.
 
-‘훅 설치됨’은 등록 성공 기록이고, 감지 횟수는 전환 요청 횟수입니다. Windows가 시간 초과로 훅을 제거했는지는 직접 확인할 수 없습니다. 잠금·보안 데스크톱에서는 동작하지 않으며, 다른 훅·권한 차이·원격 접속 환경에 따른 차이는 별도 검증이 필요합니다.
+DLL 주입이나 드라이버 없이 전용 스레드의 `WH_KEYBOARD_LL` 훅을 사용합니다. 잠금·보안 데스크톱에서는 동작하지 않으며, 회사의 강제 잠금 정책은 그대로 적용됩니다.
 
-작은 Windows 트레이 유틸리티입니다. 설치나 별도 런타임 없이 절전 방지, 화면 유지, 유휴 마우스 입력, 업데이트 일시중지 연장(시험), 로그인 시 자동 실행을 제공합니다.
+## 전체화면 신호·미디어 재생 상태
 
-[English README](README.en.md)
+두 기능은 함께 켤 수 있습니다. 전체화면 신호를 트레이에서 켜면 기본 설정창이 열립니다. X·최소화로 숨겨도 표시 설정은 유지됩니다. Windows 문서상 셸 효과는 대상 창이 활성일 때 적용되므로 다른 창으로 전환한 경우는 따로 확인해야 합니다.
 
-## 실행 파일과 언어
+트레이 상태 줄은 신호의 활성/비활성 상태, 미디어 상태와 오류를 표시합니다. 실패한 항목은 체크가 꺼집니다. API 성공은 QUNS 변경이나 SSO 유지 성공을 의미하지 않습니다. **미디어 상태는 실제 영상 재생을 대신하지 않습니다.**
 
-| 파일 | 언어 | 대상 |
-|---|---|---|
-| [AwakeMini-v1.4.0-state1-x64-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.4.0-state1-x64-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.4.0-state1-x64-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.4.0-state1-x86-auto.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.4.0-state1-x86-ko.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.4.0-state1-x86-en.exe](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+- 전체 일시정지·잠금·세션 연결 해제·보안 데스크톱 감지·절전·종료 시 두 상태를 해제하며 자동 재활성화하지 않습니다.
+- 검은화면을 켜면 전체화면 신호를 끄고, 신호를 켜면 기존 검은화면을 해제합니다. 미디어 상태는 독립적으로 유지됩니다.
+- 두 상태 항목 자체는 전원 요청이나 마우스 입력을 추가하지 않습니다.
+- 표시 해제가 실패하면 표시가 남지 않도록 설정창을 닫습니다. 트레이 더블클릭으로 다시 열 수 있으며, 아직 적용하지 않은 일반 설정은 다시 입력해야 할 수 있습니다.
 
-자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
-
-
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.4.0-state1/AwakeMini-v1.4.0-state1-source.zip?raw=true)
-
-## 검은 화면
-
-**Win+B**, 설정창의 **‘검은화면’ 버튼** 또는 **트레이 우클릭 → 검은화면**을 사용하면 모든 모니터를 검게 덮고 설정창을 숨깁니다. 검은 화면에는 **주 모니터 오른쪽 아래의 작은 ‘해제’ 버튼만** 표시합니다. **해제**를 클릭하면 원래 화면으로 돌아오며, 실행 전에 설정창이 열려 있었다면 다시 표시합니다.
-
-- **Win+B**로도 켜고 끌 수 있습니다.
-- 화면 전체는 검게 표시하며, 포인터는 검은 배경에서 숨기고 해제 버튼 위에서 표시합니다. 마우스 이동이나 검은 배경 클릭으로는 해제되지 않습니다. 비상시 Alt+F4로도 해제할 수 있습니다.
-- 검은 화면 동안 절전 방지·화면 유지·유휴 마우스 입력을 임시 활성화합니다. **기존 대기 시간**(기본 2분)을 유지하며, 해제하면 원래 기능 선택으로 돌아갑니다.
-- 누르고 있는 키·버튼, 최근 사용자 입력, 잠금·보안 데스크톱 및 모의 입력 제한은 기존처럼 확인합니다. 업데이트 연장은 기존 ON/OFF 및 전체 일시정지 설정을 따릅니다.
-- 디스플레이 전원 끄기·잠금·로그아웃을 요청하지 않습니다. LCD 백라이트는 계속 켜져 있으며 회사의 강제 잠금 정책은 그대로 적용됩니다.
-- 모니터 배치 변경 시 검은 창과 해제 버튼을 다시 배치합니다. 잠금·세션 연결 해제·보안 데스크톱·절전 진입·종료 시 검은 창을 정리합니다.
-- 설정창 크기는 206×133 DLU입니다. 해제 버튼은 96 DPI 기준 56×24px이며 DPI에 따라 배율을 적용합니다.
-- 사용자가 버튼과 Win+B 동작을 확인했습니다. 개발 환경에서는 실제 Windows UI·혼합 DPI 모니터 동작을 직접 검증하지 못했습니다.
-
-## 기본 사용법
-
-1. 기존 Awake Mini를 트레이 우클릭 → 종료로 끝냅니다.
-2. 원하는 EXE를 계속 보관할 폴더에 둔 뒤 실행합니다.
-3. 트레이 아이콘 더블클릭으로 설정창을 엽니다. 우클릭으로 메뉴를 엽니다.
-4. 원하는 기능을 체크하고 **적용**을 누릅니다.
-5. **최소화** 또는 창의 X를 누르면 창만 숨깁니다. 종료는 **프로그램 종료**를 사용합니다.
-
-- 절전 방지: 무기한 전원 유지 요청.
-- 화면 켜기 유지: 절전 방지와 함께 사용.
-- 화면보호기 방지: 지정한 시간 동안 입력이 없으면 작은 마우스 이동 입력을 보낸 뒤 복귀. 기본 2분, 범위 1~1440분.
-- 사용자가 키나 마우스 버튼을 누르고 있으면 이동을 생략합니다.
-- 잠금/보안 데스크톱에서는 마우스 및 전원 유지 기능을 쉽니다.
-- 모의 입력이 제한된 환경에서는 화면보호기 방지가 작동하지 않을 수 있습니다.
-- 전체 일시정지는 현재 실행에만 적용됩니다. 다른 설정은 저장됩니다.
+SSO 프로그램·통신·세션 토큰·보안 정책에는 접근하지 않습니다. 실제 Windows 상태 노출과 SSO 유지 효과는 미검증입니다.
 
 ## Windows 시작 시 실행
 
-설정창에서 **Windows 시작 시 실행 → 적용**을 선택합니다. 현재 사용자가 Windows에 로그인한 뒤 별도 설정창 없이 트레이에서 실행합니다. 로그온 전이나 다른 사용자의 세션에서는 실행하지 않습니다. Windows가 시작 프로그램 실행을 지연할 수 있습니다.
+**Windows 시작 시 실행 → 적용**을 선택합니다. 기본값은 OFF이며 체크 해제 → 적용으로 등록을 제거합니다. 현재 EXE 경로를 현재 사용자 Run 항목에 저장합니다.
 
-- 기본값은 OFF입니다. 체크 해제 → 적용으로 등록을 제거합니다.
-- 현재 EXE의 전체 경로를 현재 사용자 Run 항목에 기록합니다. 다른 시작 프로그램을 변경하지 않습니다.
-- EXE를 이동하거나 새 버전/다른 언어 파일로 교체한 경우, 해당 EXE에서 체크 → 적용을 다시 눌러 경로를 갱신하세요.
-- 자동 실행은 **일반 권한**입니다. 관리자 권한을 자동으로 얻거나 로그인 때 UAC 창을 띄우지 않습니다.
-- 업데이트 연장이 필요하면 자동 실행된 프로그램을 종료하고 해당 EXE를 관리자 권한으로 실행해야 합니다.
-- Windows 시작 프로그램 설정에서 사용자가 비활성화한 항목이나 조직의 시작 프로그램 제한을 강제로 해제하지 않습니다. 앱의 체크는 Run 항목 등록 여부를 나타냅니다.
+EXE를 이동하거나 교체하면 새 EXE에서 체크 → 적용으로 경로를 갱신하세요. 자동 실행은 **일반 권한**입니다. 업데이트 연장이 필요하면 자동 실행된 프로그램을 종료하고 관리자 권한으로 실행해야 합니다. 다른 사용자의 로그인이나 로그인 전에는 실행하지 않으며, Windows가 시작을 지연할 수 있습니다.
 
 ## 업데이트 일시중지 연장 — 시험 기능
 
-관리자 권한으로 실행하고 **업데이트 일시중지 연장 (시험) → 적용**을 선택합니다. 날짜 기록 결과와 Windows의 중지 상태값이 설정창에 표시됩니다. 관리자 권한 부족 및 업데이트 관련 실패 상태는 별도 팝업으로 반복하지 않습니다. 설정 저장은 성공했지만 업데이트 연장이 미적용이면 버튼은 **설정 저장됨**으로 표시합니다.
+관리자 권한으로 실행하여 **업데이트 일시중지 연장 (시험) → 적용**을 선택합니다. 기록 날짜와 OS 중지 상태값을 창에 표시하며, 관련 실패를 별도 팝업으로 반복하지 않습니다.
 
-- 시작 시 오늘+7일, 이후 마지막 갱신부터 24시간이 지나면 오늘+7일로 갱신합니다.
-- 최초 중지일부터 최대 35일을 보수적인 상한으로 사용합니다. `SetMaxPauseDays`가 더 짧으면 해당 값을 따릅니다.
-- 기존의 더 긴 일시중지 기간을 줄이지 않습니다.
-- OFF / 전체 일시정지 / 종료 시 자동 갱신만 멈추고 마지막 중지 기한은 유지합니다. 즉시 재개는 Windows 설정에서 하세요.
-- `SetDisablePauseUXAccess=1`이면 변경하지 않습니다. 관련 없는 관리 정책의 존재만으로 중단하지 않습니다.
-- 정책 읽기 실패/알 수 없는 값/외부 날짜 변경/재부팅 대기 등은 상태 문구로 알립니다.
-- Windows 설정 앱의 실제 일시중지 동작은 일부 재부팅 대기를 취소할 수 있습니다. 이 앱의 레지스트리 날짜 기록 방식은 그 동작까지 보장하지 않습니다.
+- 시작 시 오늘+7일, 마지막 갱신부터 24시간이 지나면 오늘+7일로 갱신합니다.
+- 최초 중지일부터 최대 35일을 상한으로 사용합니다. 더 짧은 `SetMaxPauseDays` 정책은 해당 상한을 따릅니다.
+- 기존의 더 긴 기간을 줄이지 않습니다. OFF·전체 일시정지·종료는 자동 갱신만 멈추고 기록된 기한을 유지합니다.
+- `SetDisablePauseUXAccess=1`, 정책 읽기 실패, 예상하지 못한 값, 외부 날짜 변경 또는 재부팅 대기는 상태 문구로 알립니다.
 
-이 기능은 WindowsUpdate `UX/Settings`의 날짜를 직접 기록하는 **비공식 시험 구현**입니다. Windows Update가 이를 수락하거나 실제 재부팅을 막는다는 보장은 없습니다. `기록 기한`은 저장된 날짜이며, `OS 상태값`은 Windows의 `PausedQualityStatus`와 `PausedFeatureStatus`를 읽은 결과입니다. 상태값은 지연될 수 있습니다. **업데이트 설정** 버튼을 눌러 실제 상태와 기한을 확인하세요.
+WindowsUpdate `UX/Settings`의 날짜를 직접 기록하는 **비공식 시험 기능**으로, Windows Update가 수락하거나 재부팅을 막는다고 보장할 수 없습니다. **업데이트 설정** 버튼에서 실제 상태와 기한을 확인하세요. 정책·서비스·예약 작업·ACL을 변경하지 않습니다.
 
-정책/서비스/예약 작업/ACL을 변경하지 않습니다. 시작 시 실행은 사용자가 체크한 경우에만 별도 Run 항목을 기록합니다.
+## 지원 및 검증
 
-## 지원 및 검증 범위
+Windows 10 1903 이상 / Windows 11을 대상으로 빌드했습니다. x86/x64 auto/ko/en 6개 빌드, PE 리소스와 배치, 번역, 모의 Win32/WinRT 상태 생명주기, 기존 Win+B·검은화면 검사를 통과했습니다. 상세 결과는 [VERIFICATION.json](VERIFICATION.json), 실행 파일 해시는 [SHA256SUMS.txt](SHA256SUMS.txt)에 있습니다.
 
-- Windows 10 1903 이상 / Windows 11을 대상으로 빌드했습니다. ARM64 네이티브 빌드는 없습니다.
-- 설정창은 206×133 DLU입니다. 픽셀 크기는 DPI와 글꼴에 따라 달라집니다.
-- Windows 기본 DLL을 사용하며 별도 .NET/Python 설치가 필요 없습니다.
-- 6개 EXE의 엄격한 컴파일, 언어 문자열/자리표시자, 시작 등록 모의 검사, 업데이트 정책 및 기간 경계 검사를 수행합니다. 실제 결과는 `VERIFICATION.json`을 참고하세요.
-- 사용자 PC에서 Win+B 동작 확인(2026-09-16). 개발 환경의 직접 Windows 실행, 로그인 자동 실행 및 회사별 업데이트 동작 검증은 수행하지 않았습니다.
+사용자가 이전 **1.3.3-winb1**에서 Win+B 동작을 확인했습니다. 이 확인은 이번 버전의 새 상태 기능을 검증한 결과가 아닙니다. 개발 환경에서 실제 Windows 실행, 혼합 DPI, 로그인 자동 실행 및 회사별 업데이트/SSO 동작은 검증하지 못했습니다.
+
+## 릴리스 게시
+
+`release.yml`은 main 또는 이 시험 브랜치에 새 버전 패키지를 게시하면 체크섬과 ZIP 내용을 확인한 뒤 Releases에 등록합니다. 별도 비밀번호나 개인 토큰이 필요하지 않습니다. 이미 공개한 같은 버전은 덮어쓰지 않으므로 변경된 EXE는 새 버전 번호로 게시하세요. 중단된 초안은 Actions에서 재실행할 수 있습니다.
 
 ## 소스 및 빌드
 
-MinGW-w64의 i686/x86_64 gcc와 windres를 PATH에 둡니다.
+MinGW-w64 i686/x86_64 gcc와 windres를 PATH에 두고 실행합니다.
 
 ```sh
 sh build.sh
-python3 src/test-policy-gate.py
-python3 src/test-startup.py
+python3 src/test-state-test.py
 python3 src/test-blackout.py
 python3 src/test-win-b-hook.py
-python3 src/test-state-test.py
-cc -std=c11 -Wall -Wextra -Werror src/test-update-plan.c -o test-update-plan
-./test-update-plan
 ```
 
-`dist`에 auto/ko/en × x86/x64 실행 파일이 생성됩니다. 자동 선택은 `AM_FORCE_LANGUAGE=0`, 한국어 고정은 1, 영어 고정은 2입니다. 번역은 `src/language.c` 및 `src/translations.json`에 있습니다. 언어 문자열 수정 시 두 파일을 함께 갱신하세요.
+`dist`에 auto/ko/en × x86/x64 파일이 생성됩니다. 번역 수정 시 `src/language.c`와 `src/translations.json`을 함께 갱신하세요.
 
-사용자 설정: `HKCU\Software\AwakeMini`  
-시작 등록: `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`의 `AwakeMini`  
-업데이트 갱신 상태: `HKLM\SOFTWARE\AwakeMini\UpdatePauseV1` (64비트 뷰)
+- 사용자 설정: `HKCU\Software\AwakeMini`
+- 시작 등록: 현재 사용자 `Run`의 `AwakeMini`
+- 업데이트 갱신 기록: `HKLM\SOFTWARE\AwakeMini\UpdatePauseV1` (64비트 뷰)
 
-## 공식 참고자료
+## 공식 문서
 
-- [Windows 시작 등록](https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys)
-- [사용자 표시 언어](https://learn.microsoft.com/en-us/windows/win32/api/winnls/nf-winnls-getuserdefaultuilanguage)
-- [사용자 업데이트 일시중지 금지 정책](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-update#setdisablepauseuxaccess)
-- [업데이트 일시중지와 상태값](https://learn.microsoft.com/en-us/windows/deployment/update/waas-configure-wufb#pause-quality-updates)
+- [전원 유지 요청](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setthreadexecutionstate)
+- [전체화면 표시](https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist2-markfullscreenwindow)
+- [알림 상태 조회](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shqueryusernotificationstate)
+- [미디어 상태](https://learn.microsoft.com/en-us/windows/win32/api/systemmediatransportcontrolsinterop/nf-systemmediatransportcontrolsinterop-isystemmediatransportcontrolsinterop-getforwindow)
+- [시작 등록](https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys)
 
 라이선스: [MIT](LICENSE.txt)
-
-- [LowLevelKeyboardProc: callback, suppression and thread requirements](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc)
-- [SendInput: injected input and privilege limits](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput)
-
-- [MarkFullscreenWindow](https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist2-markfullscreenwindow)
-- [Desktop SMTC GetForWindow](https://learn.microsoft.com/en-us/windows/win32/api/systemmediatransportcontrolsinterop/nf-systemmediatransportcontrolsinterop-isystemmediatransportcontrolsinterop-getforwindow)
-- [SystemMediaTransportControls](https://learn.microsoft.com/en-us/uwp/api/windows.media.systemmediatransportcontrols)

@@ -27,9 +27,8 @@
 #define ID_UPDATE_SETTINGS 108
 #define ID_BLACKOUT 109
 #define ID_REHOOK 110
-#define ID_STATE_TEST 111
-#define ID_FULL_TEST 112
 #define ID_MEDIA_TEST 113
+#define ID_SIGNAL_TEST 114
 #define ID_INTERVAL 200
 
 static const DWORD intervals[] = {60, 120, 300, 600};
@@ -188,9 +187,10 @@ static void show_menu(void)
     inspect_saver();
     if (!menu || !timing) { if (menu) DestroyMenu(menu); if (timing) DestroyMenu(timing); return; }
     AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, paused ? AM_TEXT(L"Awake Mini · 일시정지") : AM_TEXT(L"Awake Mini · 트레이 모드"));
-    AppendMenuW(menu, MF_STRING, ID_STATE_TEST, AM_TEXT(L"상태 시험 설정"));
-    AppendMenuW(menu, MF_STRING | (am_test_full_active() ? MF_CHECKED : 0), ID_FULL_TEST, AM_TEXT(L"전체화면 알림 (시험)"));
-    AppendMenuW(menu, MF_STRING | (am_test_media_active() ? MF_CHECKED : 0), ID_MEDIA_TEST, AM_TEXT(L"미디어 재생 상태 (시험)"));
+    AppendMenuW(menu, MF_STRING | (am_test_signal_active() ? MF_CHECKED : 0), ID_SIGNAL_TEST, AM_TEXT(L"전체화면 신호"));
+    AppendMenuW(menu, MF_STRING | (am_test_media_active() ? MF_CHECKED : 0), ID_MEDIA_TEST, AM_TEXT(L"미디어 재생 상태"));
+    am_test_status(status);
+    AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, status);
     AppendMenuW(menu, MF_STRING, ID_SETTINGS, AM_TEXT(L"설정 열기 (더블클릭)"));
     AppendMenuW(menu, MF_STRING | (blackout_ready ? 0 : MF_GRAYED) |
         (am_blackout_active() ? MF_CHECKED : 0), ID_BLACKOUT,
@@ -257,16 +257,17 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         SendMessageW(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icons[0]);
         SendDlgItemMessageW(hwnd, 1004, EM_SETLIMITTEXT, 4, 0);
         refresh_settings();
+        am_test_bind(hwnd);
         return TRUE;
     case WM_COMMAND:
         if (((LOWORD(wp) >= 1001 && LOWORD(wp) <= 1005) || LOWORD(wp) == 1008 || LOWORD(wp) == 1011) &&
             (HIWORD(wp) == BN_CLICKED || HIWORD(wp) == EN_CHANGE))
             SetDlgItemTextW(hwnd, IDOK, AM_TEXT(L"적용"));
         switch (LOWORD(wp)) {
-        case 1013:
-            am_test_tick(desktop_available() && !paused); am_test_show(); return TRUE;
+        case 1306: SendMessageW(window, AM_TEST_SIGNAL, 0, 0); return TRUE;
+        case 1302: SendMessageW(window, AM_TEST_MEDIA, 0, 0); return TRUE;
         case 1012:
-            am_test_full_stop(FALSE);
+            am_test_signal_stop();
             available = desktop_available();
             if (available) am_blackout_toggle(hwnd);
             update_power(); update_tray(); refresh_blackout_button();
@@ -328,7 +329,7 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         break;
     case WM_CLOSE:
         ShowWindow(hwnd, SW_HIDE); return TRUE;
-    case WM_DESTROY: settings = NULL; return TRUE;
+    case WM_DESTROY: settings = NULL; am_test_bind(NULL); return TRUE;
     }
     return FALSE;
 }
@@ -353,21 +354,22 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     unsigned command;
     if (taskbar_created && msg == taskbar_created) { am_test_shell_changed(); tray_added = FALSE; update_tray(); return 0; }
     switch (msg) {
-    case AM_TEST_FULLSCREEN:
+    case AM_TEST_SIGNAL:
         am_test_tick(desktop_available() && !paused);
-        if (!am_test_full_active() && !paused && desktop_available()) am_blackout_hide(FALSE);
-        am_test_full_toggle(); update_power(); update_tray(); return 0;
+        if (!am_test_signal_active() && !paused && desktop_available()) am_blackout_hide(FALSE);
+        if (!am_test_signal_active() && !paused && desktop_available()) show_settings();
+        am_test_signal_toggle(); update_power(); update_tray(); return 0;
     case AM_TEST_MEDIA:
         am_test_tick(desktop_available() && !paused); am_test_media_toggle(); return 0;
     case AM_WIN_B_TOGGLE:
-        am_test_full_stop(FALSE);
+        am_test_signal_stop();
         available = desktop_available();
         if (blackout_ready && available) am_blackout_toggle(settings);
         update_power(); update_tray(); return 0;
     case AM_BLACKOUT_CHANGED:
         refresh_blackout_button(); update_power(); update_tray(); return 0;
     case WM_DISPLAYCHANGE:
-        am_test_display_changed(); am_blackout_refresh(); return 0;
+        am_blackout_refresh(); return 0;
     case WM_TIMER: {
         BOOL before = available;
         available = desktop_available();
@@ -385,15 +387,14 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         return 0;
     case WM_COMMAND:
         command = LOWORD(wp);
-        if (command == ID_STATE_TEST) { am_test_tick(desktop_available() && !paused); am_test_show(); return 0; }
-        if (command == ID_FULL_TEST) { SendMessageW(hwnd, AM_TEST_FULLSCREEN, 0, 0); return 0; }
+        if (command == ID_SIGNAL_TEST) { SendMessageW(hwnd, AM_TEST_SIGNAL, 0, 0); return 0; }
         if (command == ID_MEDIA_TEST) { SendMessageW(hwnd, AM_TEST_MEDIA, 0, 0); return 0; }
         if (command == ID_REHOOK) {
             if (blackout_ready) am_keys_start(instance, window);
             return 0;
         }
         if (command == ID_BLACKOUT) {
-            am_test_full_stop(FALSE);
+            am_test_signal_stop();
             available = desktop_available();
             if (available) am_blackout_toggle(settings);
             update_power(); update_tray(); return 0;
@@ -403,7 +404,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (command == ID_EXIT) { DestroyWindow(hwnd); return 0; }
         if (command == ID_ABOUT) {
             MessageBoxW(hwnd,
-                AM_TEXT(L"Awake Mini 1.4.0-state1\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
+                AM_TEXT(L"Awake Mini 1.4.0-state3\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
                 APP, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
@@ -483,7 +484,6 @@ int WINAPI WinMain(HINSTANCE current, HINSTANCE previous, LPSTR arguments, int s
     update_power();
     up_tick(update_on && !paused, TRUE);
     while ((result = GetMessageW(&msg, NULL, 0, 0)) > 0) {
-        if (am_test_message(&msg)) continue;
         if (settings && IsWindowVisible(settings) && IsDialogMessageW(settings, &msg)) continue;
         TranslateMessage(&msg); DispatchMessageW(&msg);
     }

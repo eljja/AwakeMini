@@ -5,8 +5,8 @@
 3 ICON "attention.ico"
 1 RT_MANIFEST "awake-mini.manifest"
 1 VERSIONINFO
-FILEVERSION 1,4,0,1
-PRODUCTVERSION 1,4,0,1
+FILEVERSION 1,4,0,3
+PRODUCTVERSION 1,4,0,3
 FILEFLAGSMASK 0x3fL
 FILEFLAGS 0
 FILEOS VOS_NT_WINDOWS32
@@ -17,9 +17,9 @@ BEGIN
     BLOCK "040904b0"
     BEGIN
       VALUE "FileDescription", "Awake Mini - Sleep, display and idle input control"
-      VALUE "FileVersion", "1.4.0-state1"
+      VALUE "FileVersion", "1.4.0-state3"
       VALUE "ProductName", "Awake Mini"
-      VALUE "ProductVersion", "1.4.0-state1"
+      VALUE "ProductVersion", "1.4.0-state3"
       VALUE "OriginalFilename", "AwakeMini.exe"
     END
   END
@@ -29,39 +29,27 @@ BEGIN
   END
 END
 
-1000 DIALOGEX 0, 0, 206, 133
+1000 DIALOGEX 0, 0, 250, 145
 STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Awake Mini 설정"
 FONT 9, "Malgun Gothic"
 BEGIN
-    CONTROL "절전 방지 · 무기한 유지", 1001, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 4, 128, 12
-    PUSHBUTTON "검은화면", 1012, 138, 2, 62, 14
-    CONTROL "화면 켜기 유지", 1002, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 16, 17, 118, 12
-    PUSHBUTTON "상태 시험", 1013, 138, 16, 62, 14
-    CONTROL "화면보호기 방지 · 마우스 미세 이동", 1003, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 30, 194, 12
-    LTEXT "마우스 이동 전 대기 시간", -1, 16, 46, 122, 11
-    EDITTEXT 1004, 144, 43, 34, 15, ES_NUMBER | ES_RIGHT | WS_TABSTOP
-    LTEXT "분", -1, 182, 46, 18, 11
-    CONTROL "업데이트 일시중지 연장 (시험)", 1008, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 61, 128, 12
-    PUSHBUTTON "업데이트 설정", 1010, 138, 59, 62, 16
-    LTEXT "OFF", 1009, 16, 77, 184, 20
-    CONTROL "전체 일시정지", 1005, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 98, 90, 12
-    CONTROL "Windows 시작 시 실행", 1011, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 100, 98, 100, 12
-    PUSHBUTTON "프로그램 종료", 1007, 6, 112, 62, 17
-    DEFPUSHBUTTON "적용", IDOK, 72, 112, 62, 17
-    PUSHBUTTON "최소화", IDCANCEL, 138, 112, 62, 17
-END
-
-1300 DIALOGEX 0, 0, 206, 127
-STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Awake Mini 상태 시험"
-FONT 9, "Malgun Gothic"
-BEGIN
-    CONTROL "전체화면 알림 (시험)", 1301, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 6, 194, 12
-    LTEXT "OFF", 1303, 16, 22, 184, 12
-    LTEXT "QUNS", 1304, 16, 36, 184, 12
-    CONTROL "미디어 재생 상태 (시험)", 1302, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 53, 194, 12
-    LTEXT "OFF", 1305, 16, 69, 184, 12
-    LTEXT "상태만 시험 · SSO 유지 여부는 별도 확인", -1, 6, 86, 194, 12
-    PUSHBUTTON "최소화", IDCANCEL, 138, 105, 62, 17
+    CONTROL "절전 방지 · 무기한 유지", 1001, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 4, 172, 12
+    PUSHBUTTON "검은화면", 1012, 182, 2, 62, 14
+    CONTROL "화면 켜기 유지", 1002, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 17, 78, 12
+    CONTROL "전체화면 신호", 1306, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 86, 17, 70, 12
+    CONTROL "미디어 재생 상태", 1302, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 158, 17, 86, 12
+    LTEXT "QUNS", 1304, 6, 30, 238, 12
+    CONTROL "화면보호기 방지 · 마우스 미세 이동", 1003, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 42, 238, 12
+    LTEXT "마우스 이동 전 대기 시간", -1, 16, 58, 166, 11
+    EDITTEXT 1004, 188, 55, 34, 15, ES_NUMBER | ES_RIGHT | WS_TABSTOP
+    LTEXT "분", -1, 226, 58, 18, 11
+    CONTROL "업데이트 일시중지 연장 (시험)", 1008, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 73, 172, 12
+    PUSHBUTTON "업데이트 설정", 1010, 182, 71, 62, 16
+    LTEXT "OFF", 1009, 16, 89, 228, 20
+    CONTROL "전체 일시정지", 1005, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 110, 90, 12
+    CONTROL "Windows 시작 시 실행", 1011, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 144, 110, 100, 12
+    PUSHBUTTON "프로그램 종료", 1007, 6, 124, 62, 17
+    DEFPUSHBUTTON "적용", IDOK, 94, 124, 62, 17
+    PUSHBUTTON "최소화", IDCANCEL, 182, 124, 62, 17
 END

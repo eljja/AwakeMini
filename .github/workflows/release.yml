@@ -1,0 +1,36 @@
+name: Publish Awake Mini release
+
+on:
+  push:
+    branches: [main, experiment/presentation-media-state]
+    paths:
+      - 'VERIFICATION.json'
+      - 'downloads/**'
+      - '.github/workflows/release.yml'
+      - '.github/scripts/publish-release.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: awake-mini-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Fetch the exact pushed commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Verify and publish packaged executables
+        run: python3 .github/scripts/publish-release.py
