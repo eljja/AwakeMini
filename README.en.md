@@ -30,21 +30,30 @@ A small Windows tray utility providing keep-awake requests, display keep-on, idl
 
 [한국어 README](README.ko.md)
 
-## Executables and language
+## Latest prerelease downloads (1.4.0-state3)
+
+| Target | Automatic | Korean | English |
+|---|---|---|---|
+| x64 | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
+| x86 | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
+
+[Complete ZIP](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
+
+## Previous version downloads (1.3.3-winb1)
 
 | File | Language | Target |
 |---|---|---|
-| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Automatic | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | Korean | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | English | 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Automatic | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | Korean | 32-bit or 64-bit Windows |
-| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | English | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-auto.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe) | Automatic | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-ko.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe) | Korean | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x64-en.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe) | English | 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-auto.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe) | Automatic | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-ko.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe) | Korean | 32-bit or 64-bit Windows |
+| [AwakeMini-v1.3.3-winb1-x86-en.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe) | English | 32-bit or 64-bit Windows |
 
 The automatic build uses Korean when the current user's Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart the app after changing the display language. Fixed-language builds are separate executables and need no command-line options. Run only one executable at a time.
 
 
-**Complete download:** [Six executables, source, and both READMEs](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
+**Complete download:** [Six executables, source, and both READMEs](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip)
 
 ## Quick start
 

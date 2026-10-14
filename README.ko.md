@@ -30,21 +30,30 @@
 
 [English README](README.en.md)
 
-## 실행 파일과 언어
+## 최신 시험판 다운로드 (1.4.0-state3)
+
+| 대상 | 자동 언어 | 한국어 | 영어 |
+|---|---|---|---|
+| x64 | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
+| x86 | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
+
+[전체 ZIP](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
+
+## 이전 버전 다운로드 (1.3.3-winb1)
 
 | 파일 | 언어 | 대상 |
 |---|---|---|
-| [AwakeMini-v1.3.3-winb1-x64-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x64-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe?raw=true) | 한국어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x64-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe?raw=true) | 영어 고정 | 64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-auto.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe?raw=true) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-ko.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe?raw=true) | 한국어 고정 | 32·64비트 Windows |
-| [AwakeMini-v1.3.3-winb1-x86-en.exe](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe?raw=true) | 영어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-auto.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-auto.exe) | Windows 표시 언어에 따라 자동 선택 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-ko.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-ko.exe) | 한국어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x64-en.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x64-en.exe) | 영어 고정 | 64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-auto.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-auto.exe) | Windows 표시 언어에 따라 자동 선택 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-ko.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-ko.exe) | 한국어 고정 | 32·64비트 Windows |
+| [AwakeMini-v1.3.3-winb1-x86-en.exe](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-x86-en.exe) | 영어 고정 | 32·64비트 Windows |
 
 자동 선택판은 현재 사용자의 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어로 표시합니다. Windows 10/11 버전 번호나 키보드 입력 언어로 결정하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. 언어 고정판은 별도 파일이며 명령줄 옵션이 필요 없습니다. 실행 파일 중 하나만 사용하세요.
 
 
-**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip?raw=true)
+**전체 다운로드:** [EXE 6개·소스·한영 설명서 ZIP](https://raw.githubusercontent.com/eljja/AwakeMini/fe464db2a1433031e345ce1b4c2294e0803cda4e/downloads/v1.3.3-winb1/AwakeMini-v1.3.3-winb1-source.zip)
 
 ## 검은 화면
 
