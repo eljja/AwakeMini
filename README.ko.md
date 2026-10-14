@@ -2,7 +2,7 @@
 
 설치 없이 실행하는 작은 Windows 트레이 프로그램입니다. 절전 방지, 화면 유지, 유휴 마우스 입력, Win+B 검은화면, 로그인 시 자동 실행을 제공합니다.
 
-**이 브랜치의 최신 버전: 1.4.0-state3** · [English](README.en.md) · [이전 버전](https://github.com/eljja/AwakeMini/tree/fe464db2a1433031e345ce1b4c2294e0803cda4e)
+**최신 버전: 1.4.0-state3** · [English](README.en.md) · [이전 버전: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
 
 ## 다운로드
 
@@ -100,9 +100,11 @@ Windows 10 1903 이상 / Windows 11을 대상으로 빌드했습니다. x86/x64 
 
 사용자가 이전 **1.3.3-winb1**에서 Win+B 동작을 확인했습니다. 이 확인은 이번 버전의 새 상태 기능을 검증한 결과가 아닙니다. 개발 환경에서 실제 Windows 실행, 혼합 DPI, 로그인 자동 실행 및 회사별 업데이트/SSO 동작은 검증하지 못했습니다.
 
-## 릴리스 게시
+## 브랜치와 릴리스
 
-`release.yml`은 main 또는 이 시험 브랜치에 새 버전 패키지를 게시하면 체크섬과 ZIP 내용을 확인한 뒤 Releases에 등록합니다. 별도 비밀번호나 개인 토큰이 필요하지 않습니다. 이미 공개한 같은 버전은 덮어쓰지 않으므로 변경된 EXE는 새 버전 번호로 게시하세요. 중단된 초안은 Actions에서 재실행할 수 있습니다.
+현재 기본 브랜치는 `experiment/presentation-media-state`입니다. 이전 기본 브랜치는 `legacy-main`으로 보존했습니다.
+
+`release.yml`은 현재 기본 브랜치에 새 버전 패키지를 게시하면 체크섬과 ZIP 내용을 확인한 뒤 Releases에 등록합니다. 별도 비밀번호나 개인 토큰이 필요하지 않습니다. 이미 공개한 같은 버전은 덮어쓰지 않으므로 변경된 EXE는 새 버전 번호로 게시하세요. 중단된 초안은 Actions에서 재실행할 수 있습니다.
 
 ## 소스 및 빌드
 

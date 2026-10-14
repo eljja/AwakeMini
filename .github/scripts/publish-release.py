@@ -51,9 +51,12 @@ def main():
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
-    version, files, notes = prepare(root)
+    version = json.loads((root / 'VERIFICATION.json').read_text())['version']
+    if not re.fullmatch(r'\d+\.\d+\.\d+(?:-[A-Za-z0-9.]+)?', version):
+        raise ValueError('Invalid version')
     tag = 'v' + version
     if args.dry_run:
+        version, files, notes = prepare(root)
         print(json.dumps({'tag': tag, 'assets': [p.name for p in files], 'checksums': 'passed'}))
         return
     repository = os.environ['GITHUB_REPOSITORY']
@@ -71,7 +74,8 @@ def main():
             raise ValueError('Existing draft targets another commit; inspect before retrying')
     elif 'release not found' not in existing.stderr.lower() and 'not found' not in existing.stderr.lower():
         raise RuntimeError('Cannot inspect existing release: ' + existing.stderr.strip())
-    prerelease = '-' in version or os.environ.get('GITHUB_REF_NAME') != 'main'
+    version, files, notes = prepare(root)
+    prerelease = '-' in version or os.environ.get('GITHUB_REF_NAME') != os.environ.get('GITHUB_DEFAULT_BRANCH', 'experiment/presentation-media-state')
     with tempfile.TemporaryDirectory() as temporary:
         note_file = Path(temporary) / 'release-notes.md'
         note_file.write_text(notes)

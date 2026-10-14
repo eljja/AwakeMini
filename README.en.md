@@ -2,7 +2,7 @@
 
 A small portable Windows tray utility for keeping the PC awake, keeping the display on, sending idle mouse input, toggling a black screen with Win+B, and starting at sign-in.
 
-**Latest on this branch: 1.4.0-state3** · [한국어](README.ko.md) · [Previous version](https://github.com/eljja/AwakeMini/tree/fe464db2a1433031e345ce1b4c2294e0803cda4e)
+**Latest version: 1.4.0-state3** · [한국어](README.ko.md) · [Previous version: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
 
 ## Downloads
 
@@ -100,9 +100,11 @@ Targets Windows 10 1903+ / Windows 11. All six x86/x64 auto/ko/en builds, PE res
 
 The user confirmed Win+B on the earlier **1.3.3-winb1**. That report does not validate these new state features. Native Windows execution, mixed DPI, startup, and organization-specific update/SSO behavior have not been tested in the development environment.
 
-## Release publication
+## Branches and releases
 
-`release.yml` verifies checksums and ZIP contents, then publishes a new packaged version pushed to main or this experiment branch. No separate password or personal token is required. Existing published versions are not overwritten; use a new version number for changed executables. Interrupted drafts can be resumed by rerunning the Actions workflow.
+The default branch is `experiment/presentation-media-state`. The former default is preserved as `legacy-main`.
+
+`release.yml` verifies checksums and ZIP contents, then publishes a new packaged version pushed to the current default branch. No separate password or personal token is required. Existing published versions are not overwritten; use a new version number for changed executables. Interrupted drafts can be resumed by rerunning the Actions workflow.
 
 ## Source and build
 
