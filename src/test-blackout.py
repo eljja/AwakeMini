@@ -35,6 +35,7 @@ typedef int BOOL; typedef uintptr_t HWND; typedef uint32_t DWORD;
 #define HWND_TOPMOST 100
 #define SWP_NOACTIVATE 1
 #define SWP_SHOWWINDOW 2
+#define SWP_HIDEWINDOW 4
 #define MOUSEEVENTF_MOVE 1
 #define MOUSEEVENTF_ABSOLUTE 2
 #define MOUSEEVENTF_VIRTUALDESK 4
@@ -62,7 +63,8 @@ static UINT SendInput(UINT n,INPUT *p,int size){
 #define ES_CONTINUOUS 0x80000000u
 static int bounds[]={5760,2160,-1920,-1080,1920,1080},placed[4],button_pos[4];
 static int visible,fail_place,fail_focus,notified,destroyed,settings_visible=1,fail_button,dpi=96;
-static HWND focused=90;
+static HWND focused=90,keyboard_focus;
+static BOOL button_visible;
 static DWORD power_flags;
 static BOOL sleep_on,display_on,paused,available=TRUE,power_ok;
 static DWORD applied=0xffffffffu;
@@ -70,7 +72,8 @@ static int ShowWindow(HWND h,int n){if(h==20)settings_visible=n;else visible=n;r
 static int IsWindowVisible(HWND h){return h==20 && settings_visible;}
 static UINT GetDpiForWindow(HWND h){(void)h;return dpi;}
 static int MulDiv(int a,int b,int c){return a*b/c;}
-static HWND SetFocus(HWND h){return h;}
+static HWND SetFocus(HWND h){keyboard_focus=h;return h;}
+static HWND GetFocus(void){return keyboard_focus;}
 static int SetCursor(int c){return c;}
 static int LoadCursorW(int h,int n){(void)h;return n;}
 static int IsWindow(HWND h){return h!=0;}
@@ -78,7 +81,8 @@ static int SetForegroundWindow(HWND h){if(fail_focus)return 0;focused=h;return 1
 static int PostMessageW(HWND h,int m,int a,int b){(void)h;(void)a;(void)b;++notified;(void)m;return 1;}
 static int GetSystemMetrics(int i){return bounds[i];}
 static int SetWindowPos(HWND h,HWND z,int x,int y,int w,int t,int flags){
- if(h==30){assert(z==0 && flags==(SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW));
+ if(h==30){assert(z==0 && (flags==(SWP_NOZORDER|SWP_NOACTIVATE|SWP_SHOWWINDOW) || flags==(SWP_NOZORDER|SWP_NOACTIVATE|SWP_HIDEWINDOW)));
+ button_visible=(flags&SWP_SHOWWINDOW)!=0;
  button_pos[0]=x;button_pos[1]=y;button_pos[2]=w;button_pos[3]=t;return !fail_button;}
  assert(h==10 && z==HWND_TOPMOST && flags==(SWP_NOACTIVATE|SWP_SHOWWINDOW));
  placed[0]=x;placed[1]=y;placed[2]=w;placed[3]=t;if(fail_place)return 0;visible=1;return 1;
@@ -108,6 +112,18 @@ int main(void){
  am_blackout_hide(TRUE);assert(!active && !visible && settings_visible && focused==20);
  update_power();assert(power_flags==ES_CONTINUOUS);
  clock_now+=120000;try_mouse();assert(input_calls==2);
+ am_blackout_set_restore_visible(FALSE);
+ assert(!restore_visible);
+ assert(am_blackout_toggle(20) && active && visible && !button_visible && keyboard_focus==cover);
+ update_power();assert(power_flags==(ES_CONTINUOUS|3));
+ clock_now+=120000;try_mouse();assert(input_calls==3);
+ am_blackout_set_restore_visible(TRUE);assert(active && button_visible);
+ SetFocus(release_button);am_blackout_set_restore_visible(FALSE);
+ assert(active && visible && !button_visible && keyboard_focus==cover);
+ am_blackout_refresh();assert(active && !button_visible);
+ am_blackout_hide(TRUE);assert(!active && settings_visible);
+ assert(am_blackout_toggle(20) && !button_visible);am_blackout_hide(TRUE);
+ am_blackout_set_restore_visible(TRUE);
  settings_visible=0;focused=90;
  assert(am_blackout_toggle(20));am_blackout_hide(TRUE);
  assert(!settings_visible && focused==90); /* tray launch does not open settings */
@@ -128,7 +144,7 @@ int main(void){
  am_blackout_cleanup();assert(destroyed==1);
  assert(am_due(120000,0,0,120000,1,0,1,0,0));
  assert(!am_due(119999,0,0,120000,1,0,1,0,0));
- puts("Blackout restore-button bounds, settings visibility, failure cleanup, DPI, awake and mouse behavior passed (mock Windows)");
+ puts("Blackout restore visibility ON/OFF, focus fallback, saved-selection re-entry, DPI, awake/mouse behavior and cleanup passed (mock Windows)");
 }
 '''
 with tempfile.TemporaryDirectory() as d:

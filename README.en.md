@@ -1,8 +1,8 @@
-# Awake Mini 1.4.0-state3
+# Awake Mini 1.4.0-state4
 
 A small portable Windows tray utility for keeping the PC awake, keeping the display on, sending idle mouse input, toggling a black screen with Win+B, and starting at sign-in.
 
-**Latest version: 1.4.0-state3** · [한국어](README.ko.md) · [Previous version: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
+**Latest version: 1.4.0-state4** · [한국어](README.ko.md) · [Previous version: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
 
 ## Downloads
 
@@ -12,10 +12,10 @@ For a typical 64-bit Windows PC, choose **x64 automatic language**. No separate 
 
 | Target | Automatic language | Korean | English |
 |---|---|---|---|
-| 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
-| 32-bit or 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
+| 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-en.exe) |
+| 32-bit or 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-en.exe) |
 
-[Complete ZIP — six EXEs, source, Korean/English documentation](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
+[Complete ZIP — six EXEs, source, Korean/English documentation](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-source.zip)
 
 The automatic build uses Korean when the Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart after changing the display language. No native ARM64 build is included.
 
@@ -31,11 +31,12 @@ Fullscreen flag and Media playing state take effect **immediately**, without App
 
 ## What's new
 
-- **Fullscreen flag** and **Media playing state** are beside **Keep display on**.
-- The actual Windows **QUNS state and numeric value** appear directly below.
-- The separate state-test dialog and actual-fullscreen test were removed. Existing Win+B black screen remains available.
-- Settings measure **250×145 DLU**; pixel dimensions vary with DPI and font metrics.
-- Both state features start **OFF** on every launch. Other feature choices and idle delay are saved. Pause all applies only to the current run.
+- The awake checkbox is now labeled **Keep awake**.
+- A **Show Restore** checkbox is placed immediately left of **Black screen**.
+- Checked: show the small Restore button on black screen. Unchecked: hide it. The initial default is ON.
+- The checkbox takes effect immediately. Click **Apply** to preserve the selection for future launches.
+- **Win+B** still restores the screen when the button is hidden. Keep-awake, display retention and mouse input at the existing idle interval continue.
+- Settings remain **250×145 DLU**.
 
 ## Features
 
@@ -54,7 +55,7 @@ Mouse idle delay defaults to **2 minutes**, with a range of **1–1440 minutes**
 
 ## Win+B black screen
 
-Press **Windows + B** to cover all monitors in black. Press the same shortcut again to restore. Use the settings/tray **Black screen** command or the small **Restore** button at the bottom-right of the primary display. Holding B toggles only once.
+Press **Windows + B** to cover all monitors in black. Press the same shortcut again to restore. Use the settings/tray **Black screen** command as well. When **Show Restore** is ON, the small **Restore** button is displayed at the bottom-right of the primary display. Holding B toggles only once.
 
 - Black screen temporarily enables keep-awake, display-on and mouse input using the **existing idle delay**. Exiting restores the original selections.
 - It does not power off the monitor or request lock/sign-out. LCD backlights remain on.
@@ -96,7 +97,7 @@ This is an **unsupported experimental feature** that writes WindowsUpdate `UX/Se
 
 ## Compatibility and validation
 
-Targets Windows 10 1903+ / Windows 11. All six x86/x64 auto/ko/en builds, PE resources/layout, translations, mocked Win32/WinRT state lifecycle, and existing Win+B/black-screen checks passed. See [VERIFICATION.json](VERIFICATION.json) and [SHA256SUMS.txt](SHA256SUMS.txt).
+Targets Windows 10 1903+ / Windows 11. All six x86/x64 auto/ko/en builds, PE resources/layout, translations, mocked Win32/WinRT state lifecycle, Restore show/hide behavior, and existing Win+B/black-screen checks passed. See [VERIFICATION.json](VERIFICATION.json) and [SHA256SUMS.txt](SHA256SUMS.txt).
 
 The user confirmed Win+B on the earlier **1.3.3-winb1**. That report does not validate these new state features. Native Windows execution, mixed DPI, startup, and organization-specific update/SSO behavior have not been tested in the development environment.
 

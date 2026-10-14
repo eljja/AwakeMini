@@ -8,6 +8,7 @@
 #define ID_RELEASE 1201
 static HWND cover, release_button, owner_window, previous_focus, previous_settings;
 static BOOL active;
+static BOOL restore_visible = TRUE;
 
 BOOL am_blackout_active(void) { return active; }
 
@@ -46,7 +47,7 @@ static BOOL place_cover(void)
     if (x + button_width > width || y + button_height > height) return FALSE;
     /* The release control must be placed before exposing the cover. */
     if (!SetWindowPos(release_button, NULL, x, y, button_width, button_height,
-            SWP_NOZORDER | SWP_NOACTIVATE | SWP_SHOWWINDOW)) return FALSE;
+            SWP_NOZORDER | SWP_NOACTIVATE | (restore_visible ? SWP_SHOWWINDOW : SWP_HIDEWINDOW))) return FALSE;
     return SetWindowPos(cover, HWND_TOPMOST, left, top, width, height,
         SWP_NOACTIVATE | SWP_SHOWWINDOW);
 }
@@ -54,6 +55,13 @@ static BOOL place_cover(void)
 void am_blackout_refresh(void)
 {
     if (active && !place_cover()) am_blackout_hide(TRUE);
+}
+
+void am_blackout_set_restore_visible(BOOL visible)
+{
+    restore_visible = visible;
+    if (release_button && !visible && GetFocus() == release_button) SetFocus(cover);
+    am_blackout_refresh();
 }
 
 BOOL am_blackout_toggle(HWND settings)
@@ -67,7 +75,7 @@ BOOL am_blackout_toggle(HWND settings)
     if (previous_settings) ShowWindow(previous_settings, SW_HIDE);
     /* A denied focus request does not cancel a visible, clickable cover. */
     SetForegroundWindow(cover);
-    SetFocus(release_button);
+    SetFocus(restore_visible ? release_button : cover);
     SetCursor(NULL);
     UpdateWindow(cover);
     PostMessageW(owner_window, AM_BLACKOUT_CHANGED, 0, 0);
@@ -84,7 +92,7 @@ static LRESULT CALLBACK cover_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         }
         break;
     case WM_SETCURSOR:
-        SetCursor((HWND)wp == release_button ? LoadCursorW(NULL, IDC_ARROW) : NULL);
+        SetCursor(restore_visible && (HWND)wp == release_button ? LoadCursorW(NULL, IDC_ARROW) : NULL);
         return TRUE;
     case WM_ERASEBKGND: {
         RECT rect;

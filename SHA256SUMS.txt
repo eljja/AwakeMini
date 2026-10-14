@@ -1,6 +1,6 @@
-fd7b36ff3c013c6c6112eb8a0f0c0ea84a8ae5c9d4034b831f432bf38a03a080  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe
-cfdbffca0eb0fa760d09f44fa0adba1ddb3818af20f1b01b6f9d8a99643f657a  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe
-0b65af715c410506cb8be8a3f90eb803f5fe142bd1404b1eb607316aa66b7dd3  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe
-d182a81010fca1ec76b8c16041fdad8a165737eed362a845988859c7340b05f9  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe
-1622867d42f1a6acecfb022dbdc5b74dbceb711df7175955b4689c90dc47c96b  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe
-d3e4860d44351bb89a639b7ce30dee15e1cc47425addfed12f503b703bdfdc66  downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe
+1a1ea1525e55f615f65c92c3de3b24a41c54f44b9127dffb3604d41127dbcf3b  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-auto.exe
+a074d70259eec6795e9d40f2c40187886a250ab17c6d30f999434ac32462ae44  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-ko.exe
+fc6d306c5f2ad411330def02ddfe96bf2045100be01a357dca9552be87eab797  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-en.exe
+f9995a282c5f96469177bda89c84562eb4344cedeedc3e944e9fb4095813011b  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-auto.exe
+558976fe03cf5afd38cd21616e9e7f6ed5f7459d9bbb6af32421bc32174e3900  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-ko.exe
+7cb8e40710ab7fc58a096c5d6ab26480f6f3a593bb1f7ffbea9a2eb30633bc95  downloads/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-en.exe

@@ -39,6 +39,7 @@ static HINSTANCE instance;
 static HANDLE mutex;
 static BOOL sleep_on = TRUE, display_on = TRUE, mouse_on = TRUE;
 static BOOL update_on;
+static BOOL restore_on = TRUE;
 static BOOL paused, locked, available = TRUE, tray_added, power_ok = TRUE;
 static BOOL saver_blocked, saver_known, blackout_ready;
 static DWORD interval_s = 120, last_attempt, applied = 0xffffffffu;
@@ -64,6 +65,7 @@ static void load_settings(void)
     display_on = read_value(key, L"Display", 1) != 0;
     mouse_on = read_value(key, L"Mouse", 1) != 0;
     update_on = read_value(key, L"UpdatePause", 0) != 0;
+    restore_on = read_value(key, L"ShowRestore", 1) != 0;
     value = read_value(key, L"IntervalSeconds", 120);
     /* Migrate the old one-minute default once; preserve custom intervals. */
     if (read_value(key, L"SettingsVersion", 0) < 101 && value == 60) value = 120;
@@ -73,12 +75,12 @@ static void load_settings(void)
 static BOOL save_settings(void)
 {
     HKEY key;
-    DWORD values[] = {(DWORD)sleep_on, (DWORD)display_on, (DWORD)mouse_on, interval_s, 110, (DWORD)update_on};
-    const WCHAR *names[] = {L"Sleep", L"Display", L"Mouse", L"IntervalSeconds", L"SettingsVersion", L"UpdatePause"};
+    DWORD values[] = {(DWORD)sleep_on, (DWORD)display_on, (DWORD)mouse_on, interval_s, 110, (DWORD)update_on, (DWORD)restore_on};
+    const WCHAR *names[] = {L"Sleep", L"Display", L"Mouse", L"IntervalSeconds", L"SettingsVersion", L"UpdatePause", L"ShowRestore"};
     unsigned i;
     BOOL ok = TRUE;
     if (RegCreateKeyExW(HKEY_CURRENT_USER, KEY, 0, NULL, 0, KEY_SET_VALUE, NULL, &key, NULL) != ERROR_SUCCESS) return FALSE;
-    for (i = 0; i < 6; ++i) {
+    for (i = 0; i < sizeof(values)/sizeof(values[0]); ++i) {
         if (RegSetValueExW(key, names[i], 0, REG_DWORD, (BYTE *)&values[i], sizeof(DWORD)) != ERROR_SUCCESS) ok = FALSE;
     }
     RegCloseKey(key);
@@ -200,7 +202,7 @@ static void show_menu(void)
     AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, status);
     AppendMenuW(menu, MF_STRING | (blackout_ready ? 0 : MF_GRAYED), ID_REHOOK, AM_TEXT(L"Win+B 훅 다시 연결"));
     AppendMenuW(menu, MF_SEPARATOR, 0, NULL);
-    AppendMenuW(menu, MF_STRING | (sleep_on ? MF_CHECKED : 0), ID_SLEEP, AM_TEXT(L"절전 방지 · 무기한 유지"));
+    AppendMenuW(menu, MF_STRING | (sleep_on ? MF_CHECKED : 0), ID_SLEEP, AM_TEXT(L"절전방지"));
     AppendMenuW(menu, MF_STRING | (display_on ? MF_CHECKED : 0) | (!sleep_on ? MF_GRAYED : 0), ID_DISPLAY, AM_TEXT(L"화면 켜기 유지"));
     AppendMenuW(menu, MF_STRING | (mouse_on ? MF_CHECKED : 0), ID_MOUSE, AM_TEXT(L"화면보호기 방지 · 마우스 미세 이동"));
     for (i = 0; i < 4; ++i) AppendMenuW(timing, MF_STRING | (interval_s == intervals[i] ? MF_CHECKED : 0), ID_INTERVAL + i, AM_TEXT(labels[i]));
@@ -235,6 +237,7 @@ static void refresh_settings(void)
 {
     if (!settings) return;
     refresh_blackout_button();
+    CheckDlgButton(settings, 1014, restore_on ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(settings, 1001, sleep_on ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(settings, 1002, display_on ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(settings, 1003, mouse_on ? BST_CHECKED : BST_UNCHECKED);
@@ -260,12 +263,16 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         am_test_bind(hwnd);
         return TRUE;
     case WM_COMMAND:
-        if (((LOWORD(wp) >= 1001 && LOWORD(wp) <= 1005) || LOWORD(wp) == 1008 || LOWORD(wp) == 1011) &&
+        if (((LOWORD(wp) >= 1001 && LOWORD(wp) <= 1005) || LOWORD(wp) == 1008 || LOWORD(wp) == 1011 || LOWORD(wp) == 1014) &&
             (HIWORD(wp) == BN_CLICKED || HIWORD(wp) == EN_CHANGE))
             SetDlgItemTextW(hwnd, IDOK, AM_TEXT(L"적용"));
         switch (LOWORD(wp)) {
         case 1306: SendMessageW(window, AM_TEST_SIGNAL, 0, 0); return TRUE;
         case 1302: SendMessageW(window, AM_TEST_MEDIA, 0, 0); return TRUE;
+        case 1014:
+            restore_on = IsDlgButtonChecked(hwnd, 1014) == BST_CHECKED;
+            am_blackout_set_restore_visible(restore_on);
+            return TRUE;
         case 1012:
             am_test_signal_stop();
             available = desktop_available();
@@ -288,6 +295,8 @@ static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                 SendDlgItemMessageW(hwnd, 1004, EM_SETSEL, 0, -1);
                 return TRUE;
             }
+            restore_on = IsDlgButtonChecked(hwnd, 1014) == BST_CHECKED;
+            am_blackout_set_restore_visible(restore_on);
             sleep_on = IsDlgButtonChecked(hwnd, 1001) == BST_CHECKED;
             display_on = IsDlgButtonChecked(hwnd, 1002) == BST_CHECKED;
             mouse_on = IsDlgButtonChecked(hwnd, 1003) == BST_CHECKED;
@@ -404,7 +413,7 @@ static LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         if (command == ID_EXIT) { DestroyWindow(hwnd); return 0; }
         if (command == ID_ABOUT) {
             MessageBoxW(hwnd,
-                AM_TEXT(L"Awake Mini 1.4.0-state3\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
+                AM_TEXT(L"Awake Mini 1.4.0-state4\n\n트레이 더블클릭: 설정 / 우클릭: 메뉴\n절전 방지 · 화면 유지 · 마우스 유휴 입력\n검은화면 버튼 / 트레이 메뉴: 실행 · 화면의 해제 버튼: 복귀\n검은 화면에서는 절전·화면 유지·기존 간격 마우스 입력 활성화\n\nWindows 시작 시 실행: 로그인 후 일반 권한으로 실행합니다.\n업데이트 연장에는 관리자 권한이 필요합니다.\nEXE 이동 후 자동 실행을 체크하고 적용하여 경로를 갱신하세요.\n\n업데이트 연장은 시험 기능입니다.\n24시간마다 오늘+7일, 최초 중지일부터 최대 35일을 적용합니다.\n더 짧은 기간 정책이 있으면 해당 상한을 따릅니다.\nOFF / 전체 일시정지 / 종료 시 남은 중지 기간을 유지합니다.\n실제 중지 여부는 Windows 설정에서 확인하세요.\n\n언어: Windows 표시 언어 자동 선택 (한국어 / 영어)."),
                 APP, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
@@ -468,6 +477,7 @@ int WINAPI WinMain(HINSTANCE current, HINSTANCE previous, LPSTR arguments, int s
     am_test_init(instance, window);
     taskbar_created = RegisterWindowMessageW(L"TaskbarCreated");
     load_settings();
+    am_blackout_set_restore_visible(restore_on);
     available = desktop_available();
     am_test_tick(available && !paused);
     last_attempt = GetTickCount();

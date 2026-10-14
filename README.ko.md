@@ -1,8 +1,8 @@
-# Awake Mini 1.4.0-state3
+# Awake Mini 1.4.0-state4
 
 설치 없이 실행하는 작은 Windows 트레이 프로그램입니다. 절전 방지, 화면 유지, 유휴 마우스 입력, Win+B 검은화면, 로그인 시 자동 실행을 제공합니다.
 
-**최신 버전: 1.4.0-state3** · [English](README.en.md) · [이전 버전: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
+**최신 버전: 1.4.0-state4** · [English](README.en.md) · [이전 버전: legacy-main](https://github.com/eljja/AwakeMini/tree/legacy-main)
 
 ## 다운로드
 
@@ -12,10 +12,10 @@
 
 | 대상 | 자동 언어 선택 | 한국어 고정 | 영어 고정 |
 |---|---|---|---|
-| 64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
-| 32·64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
+| 64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x64-en.exe) |
+| 32·64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-x86-en.exe) |
 
-[전체 ZIP — EXE 6개·소스·한글/영문 설명서](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
+[전체 ZIP — EXE 6개·소스·한글/영문 설명서](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state4/AwakeMini-v1.4.0-state4-source.zip)
 
 자동 언어판은 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어를 사용합니다. Windows 버전 번호나 키보드 입력 언어로 선택하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. ARM64 네이티브 파일은 제공하지 않습니다.
 
@@ -31,11 +31,12 @@
 
 ## 최신 변경 사항
 
-- **전체화면 신호**, **미디어 재생 상태**를 **화면 켜기 유지** 옆에 배치했습니다.
-- 바로 아래에 Windows가 실제 반환한 **QUNS 상태와 숫자**를 표시합니다.
-- 별도 상태 시험창과 실제 전체화면 시험 기능을 제거했습니다. 기존 Win+B 검은화면은 사용할 수 있습니다.
-- 설정창 크기는 **250×145 DLU**입니다. 실제 픽셀 크기는 DPI와 글꼴에 따라 달라집니다.
-- 두 상태 기능은 매 실행 시 **OFF**로 시작합니다. 나머지 기능 선택과 대기 시간은 저장합니다. 전체 일시정지는 현재 실행에만 적용됩니다.
+- 설정창의 **절전방지** 문구를 짧게 변경했습니다.
+- **검은화면** 버튼 왼쪽에 **해제표시** 체크박스를 추가했습니다.
+- 체크하면 검은 화면의 작은 **해제** 버튼을 표시하고, 해제하면 숨깁니다. 처음 실행 시 기본값은 ON입니다.
+- 체크 즉시 현재 실행에 반영됩니다. **적용**을 누르면 다음 실행에도 선택을 유지합니다.
+- 버튼이 숨겨져 있어도 **Win+B**로 검은화면을 해제할 수 있습니다. 절전·화면 유지·기존 간격의 마우스 입력은 계속 동작합니다.
+- 설정창 크기는 **250×145 DLU**로 유지했습니다.
 
 ## 기능
 
@@ -54,7 +55,7 @@
 
 ## Win+B 검은화면
 
-**Windows 키 + B**로 모든 모니터를 검게 덮고, 같은 키를 다시 누르면 해제합니다. 설정창/트레이의 **검은화면** 또는 검은 화면 오른쪽 아래의 작은 **해제** 버튼도 사용할 수 있습니다. B를 길게 누르면 한 번만 전환됩니다.
+**Windows 키 + B**로 모든 모니터를 검게 덮고, 같은 키를 다시 누르면 해제합니다. 설정창/트레이의 **검은화면**도 사용할 수 있습니다. **해제표시**가 ON이면 검은 화면 오른쪽 아래에 작은 **해제** 버튼이 나타납니다. B를 길게 누르면 한 번만 전환됩니다.
 
 - 검은화면 동안 절전 방지·화면 유지·기존 대기 시간의 마우스 입력을 활성화합니다. 해제하면 원래 기능 선택으로 복귀합니다.
 - 실제 모니터 전원을 끄거나 잠금·로그아웃을 요청하지 않습니다. LCD 백라이트는 켜져 있습니다.
@@ -96,7 +97,7 @@ WindowsUpdate `UX/Settings`의 날짜를 직접 기록하는 **비공식 시험 
 
 ## 지원 및 검증
 
-Windows 10 1903 이상 / Windows 11을 대상으로 빌드했습니다. x86/x64 auto/ko/en 6개 빌드, PE 리소스와 배치, 번역, 모의 Win32/WinRT 상태 생명주기, 기존 Win+B·검은화면 검사를 통과했습니다. 상세 결과는 [VERIFICATION.json](VERIFICATION.json), 실행 파일 해시는 [SHA256SUMS.txt](SHA256SUMS.txt)에 있습니다.
+Windows 10 1903 이상 / Windows 11을 대상으로 빌드했습니다. x86/x64 auto/ko/en 6개 빌드, PE 리소스와 배치, 번역, 모의 Win32/WinRT 상태 생명주기, 해제 버튼 표시/숨김 및 기존 Win+B·검은화면 검사를 통과했습니다. 상세 결과는 [VERIFICATION.json](VERIFICATION.json), 실행 파일 해시는 [SHA256SUMS.txt](SHA256SUMS.txt)에 있습니다.
 
 사용자가 이전 **1.3.3-winb1**에서 Win+B 동작을 확인했습니다. 이 확인은 이번 버전의 새 상태 기능을 검증한 결과가 아닙니다. 개발 환경에서 실제 Windows 실행, 혼합 DPI, 로그인 자동 실행 및 회사별 업데이트/SSO 동작은 검증하지 못했습니다.
 

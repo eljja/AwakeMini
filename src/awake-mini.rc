@@ -5,8 +5,8 @@
 3 ICON "attention.ico"
 1 RT_MANIFEST "awake-mini.manifest"
 1 VERSIONINFO
-FILEVERSION 1,4,0,3
-PRODUCTVERSION 1,4,0,3
+FILEVERSION 1,4,0,4
+PRODUCTVERSION 1,4,0,4
 FILEFLAGSMASK 0x3fL
 FILEFLAGS 0
 FILEOS VOS_NT_WINDOWS32
@@ -17,9 +17,9 @@ BEGIN
     BLOCK "040904b0"
     BEGIN
       VALUE "FileDescription", "Awake Mini - Sleep, display and idle input control"
-      VALUE "FileVersion", "1.4.0-state3"
+      VALUE "FileVersion", "1.4.0-state4"
       VALUE "ProductName", "Awake Mini"
-      VALUE "ProductVersion", "1.4.0-state3"
+      VALUE "ProductVersion", "1.4.0-state4"
       VALUE "OriginalFilename", "AwakeMini.exe"
     END
   END
@@ -34,7 +34,8 @@ STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Awake Mini 설정"
 FONT 9, "Malgun Gothic"
 BEGIN
-    CONTROL "절전 방지 · 무기한 유지", 1001, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 4, 172, 12
+    CONTROL "절전방지", 1001, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 4, 96, 12
+    CONTROL "해제표시", 1014, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 110, 4, 68, 12
     PUSHBUTTON "검은화면", 1012, 182, 2, 62, 14
     CONTROL "화면 켜기 유지", 1002, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 17, 78, 12
     CONTROL "전체화면 신호", 1306, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 86, 17, 70, 12

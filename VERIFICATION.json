@@ -1,29 +1,26 @@
 {
-  "version": "1.4.0-state3",
+  "version": "1.4.0-state4",
   "native_windows_tested": false,
   "sso_retention_verified": false,
   "dialog_dlu": [
     250,
     145
   ],
-  "separate_state_dialog": false,
-  "actual_fullscreen_removed": true,
+  "restore_button_initial_default": true,
+  "restore_visibility_saved_as": "HKCU/Software/AwakeMini/ShowRestore",
   "checks": [
-    "Six strict-warning x86/x64 auto/ko/en builds passed.",
-    "PE architecture, GUI subsystem, resource bounds, version, system DLL imports validated.",
-    "Parsed actual compiled dialog: unique control IDs, in-bounds non-overlapping rectangles, same-row feature controls and QUNS below. Removed dialog/control IDs and labels absent.",
-    "80 Korean UI strings have translations; printf placeholders checked.",
-    "Actual state lifecycle against mocked Win32/WinRT with ASan/UBSan: main-dialog binding and release, hidden mark retention, independent media, 13 media setup failures, shell restart, cleanup, pause/session and no auto-resume passed.",
-    "Existing actual Win+B and blackout mock regression tests passed."
-  ],
-  "historical_unchanged_checks": [
-    "Startup and update policy/date checks from earlier versions; their implementations were not changed or re-tested here."
+    "Six x86/x64 auto/ko/en builds with -Wall -Wextra -Werror passed.",
+    "Actual compiled dialog parsed: unique control IDs, bounded non-overlapping rectangles, Show Restore checkbox left of Black screen, unchanged window size.",
+    "PE GUI subsystem, architecture, resource bounds, version and system DLL imports validated.",
+    "81 Korean UI strings have translations and printf placeholder compatibility.",
+    "Actual blackout functions under mock Win32: Restore shown/hidden, focus transferred away from hidden button, repeated entry, display refresh, cleanup and awake/mouse behavior passed.",
+    "Existing actual Win+B hook and Win32/WinRT state lifecycle regression checks passed."
   ],
   "executables": [
     {
-      "filename": "AwakeMini-v1.4.0-state3-x86-auto.exe",
-      "bytes": 80384,
-      "sha256": "fd7b36ff3c013c6c6112eb8a0f0c0ea84a8ae5c9d4034b831f432bf38a03a080",
+      "filename": "AwakeMini-v1.4.0-state4-x86-auto.exe",
+      "bytes": 80896,
+      "sha256": "1a1ea1525e55f615f65c92c3de3b24a41c54f44b9127dffb3604d41127dbcf3b",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -38,12 +35,12 @@
         "WTSAPI32.dll"
       ],
       "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
+      "dialog_controls_checked": 19
     },
     {
-      "filename": "AwakeMini-v1.4.0-state3-x86-ko.exe",
-      "bytes": 80384,
-      "sha256": "cfdbffca0eb0fa760d09f44fa0adba1ddb3818af20f1b01b6f9d8a99643f657a",
+      "filename": "AwakeMini-v1.4.0-state4-x86-ko.exe",
+      "bytes": 80896,
+      "sha256": "a074d70259eec6795e9d40f2c40187886a250ab17c6d30f999434ac32462ae44",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -58,12 +55,12 @@
         "WTSAPI32.dll"
       ],
       "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
+      "dialog_controls_checked": 19
     },
     {
-      "filename": "AwakeMini-v1.4.0-state3-x86-en.exe",
-      "bytes": 80384,
-      "sha256": "0b65af715c410506cb8be8a3f90eb803f5fe142bd1404b1eb607316aa66b7dd3",
+      "filename": "AwakeMini-v1.4.0-state4-x86-en.exe",
+      "bytes": 80896,
+      "sha256": "fc6d306c5f2ad411330def02ddfe96bf2045100be01a357dca9552be87eab797",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -78,12 +75,32 @@
         "WTSAPI32.dll"
       ],
       "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
+      "dialog_controls_checked": 19
     },
     {
-      "filename": "AwakeMini-v1.4.0-state3-x64-auto.exe",
+      "filename": "AwakeMini-v1.4.0-state4-x64-auto.exe",
+      "bytes": 77824,
+      "sha256": "f9995a282c5f96469177bda89c84562eb4344cedeedc3e944e9fb4095813011b",
+      "dlls": [
+        "ADVAPI32.dll",
+        "GDI32.dll",
+        "KERNEL32.dll",
+        "ktmw32.dll",
+        "msvcrt.dll",
+        "ole32.dll",
+        "api-ms-win-core-winrt-l1-1-0.dll",
+        "api-ms-win-core-winrt-string-l1-1-0.dll",
+        "SHELL32.dll",
+        "USER32.dll",
+        "WTSAPI32.dll"
+      ],
+      "resource_leaves_checked": 12,
+      "dialog_controls_checked": 19
+    },
+    {
+      "filename": "AwakeMini-v1.4.0-state4-x64-ko.exe",
       "bytes": 77312,
-      "sha256": "d182a81010fca1ec76b8c16041fdad8a165737eed362a845988859c7340b05f9",
+      "sha256": "558976fe03cf5afd38cd21616e9e7f6ed5f7459d9bbb6af32421bc32174e3900",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -98,12 +115,12 @@
         "WTSAPI32.dll"
       ],
       "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
+      "dialog_controls_checked": 19
     },
     {
-      "filename": "AwakeMini-v1.4.0-state3-x64-ko.exe",
-      "bytes": 76800,
-      "sha256": "1622867d42f1a6acecfb022dbdc5b74dbceb711df7175955b4689c90dc47c96b",
+      "filename": "AwakeMini-v1.4.0-state4-x64-en.exe",
+      "bytes": 77312,
+      "sha256": "7cb8e40710ab7fc58a096c5d6ab26480f6f3a593bb1f7ffbea9a2eb30633bc95",
       "dlls": [
         "ADVAPI32.dll",
         "GDI32.dll",
@@ -118,27 +135,7 @@
         "WTSAPI32.dll"
       ],
       "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
-    },
-    {
-      "filename": "AwakeMini-v1.4.0-state3-x64-en.exe",
-      "bytes": 76800,
-      "sha256": "d3e4860d44351bb89a639b7ce30dee15e1cc47425addfed12f503b703bdfdc66",
-      "dlls": [
-        "ADVAPI32.dll",
-        "GDI32.dll",
-        "KERNEL32.dll",
-        "ktmw32.dll",
-        "msvcrt.dll",
-        "ole32.dll",
-        "api-ms-win-core-winrt-l1-1-0.dll",
-        "api-ms-win-core-winrt-string-l1-1-0.dll",
-        "SHELL32.dll",
-        "USER32.dll",
-        "WTSAPI32.dll"
-      ],
-      "resource_leaves_checked": 12,
-      "dialog_controls_checked": 18
+      "dialog_controls_checked": 19
     }
   ]
 }
