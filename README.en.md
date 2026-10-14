@@ -2,7 +2,7 @@
 
 A small portable Windows tray utility for keeping the PC awake, keeping the display on, sending idle mouse input, toggling a black screen with Win+B, and starting at sign-in.
 
-**Latest on this branch: 1.4.0-state3** · [한국어](README.ko.md) · [Existing main version](https://github.com/eljja/AwakeMini/tree/main)
+**Latest on this branch: 1.4.0-state3** · [한국어](README.ko.md) · [Previous version](https://github.com/eljja/AwakeMini/tree/fe464db2a1433031e345ce1b4c2294e0803cda4e)
 
 ## Downloads
 
@@ -12,10 +12,10 @@ For a typical 64-bit Windows PC, choose **x64 automatic language**. No separate 
 
 | Target | Automatic language | Korean | English |
 |---|---|---|---|
-| 64-bit Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe?raw=true) |
-| 32-bit or 64-bit Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe?raw=true) |
+| 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
+| 32-bit or 64-bit Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
 
-[Complete ZIP — six EXEs, source, Korean/English documentation](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip?raw=true)
+[Complete ZIP — six EXEs, source, Korean/English documentation](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
 
 The automatic build uses Korean when the Windows **display language** is Korean; otherwise it uses English. It does not use the Windows version number or keyboard input language. Restart after changing the display language. No native ARM64 build is included.
 

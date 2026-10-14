@@ -2,7 +2,7 @@
 
 설치 없이 실행하는 작은 Windows 트레이 프로그램입니다. 절전 방지, 화면 유지, 유휴 마우스 입력, Win+B 검은화면, 로그인 시 자동 실행을 제공합니다.
 
-**이 브랜치의 최신 버전: 1.4.0-state3** · [English](README.en.md) · [기존 main 버전](https://github.com/eljja/AwakeMini/tree/main)
+**이 브랜치의 최신 버전: 1.4.0-state3** · [English](README.en.md) · [이전 버전](https://github.com/eljja/AwakeMini/tree/fe464db2a1433031e345ce1b4c2294e0803cda4e)
 
 ## 다운로드
 
@@ -12,10 +12,10 @@
 
 | 대상 | 자동 언어 선택 | 한국어 고정 | 영어 고정 |
 |---|---|---|---|
-| 64비트 Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe?raw=true) |
-| 32·64비트 Windows | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe?raw=true) | [EXE](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe?raw=true) |
+| 64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x64-en.exe) |
+| 32·64비트 Windows | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-auto.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-ko.exe) | [EXE](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-x86-en.exe) |
 
-[전체 ZIP — EXE 6개·소스·한글/영문 설명서](downloads/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip?raw=true)
+[전체 ZIP — EXE 6개·소스·한글/영문 설명서](https://github.com/eljja/AwakeMini/releases/download/v1.4.0-state3/AwakeMini-v1.4.0-state3-source.zip)
 
 자동 언어판은 Windows **표시 언어**가 한국어이면 한국어, 그 외에는 영어를 사용합니다. Windows 버전 번호나 키보드 입력 언어로 선택하지 않습니다. 언어 변경 후에는 프로그램을 다시 실행하세요. ARM64 네이티브 파일은 제공하지 않습니다.
 
